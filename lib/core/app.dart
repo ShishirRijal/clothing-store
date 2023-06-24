@@ -2,8 +2,7 @@ import 'package:clothing_store/core/theme.dart';
 import 'package:clothing_store/features/authentication/data/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../features/authentication/presentation/login/authentication_wrapper.dart';
+import '../features/shop/presentation/home/home_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp._internal(); // private constructor
@@ -22,13 +21,14 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: theme,
-        home: Builder(builder: (context) {
-          return StreamProvider(
-            create: (_) => context.read<AuthServices>().authStateChanges,
-            initialData: null,
-            child: const AuthenticationWrapper(),
-          );
-        }),
+        home: const HomeView(),
+        // home: Builder(builder: (context) {
+        //   return StreamProvider(
+        //     create: (_) => context.read<AuthServices>().authStateChanges,
+        //     initialData: null,
+        //     child: const AuthenticationWrapper(),
+        //   );
+        // }),
       ),
     );
   }
