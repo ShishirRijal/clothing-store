@@ -38,42 +38,36 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // * Search Bar
+          const SearchBar(),
+          const SizedBox(height: 30),
+          // * Carousel Slider for Offers
+          Offers(controller: controller, images: _images),
+          const SizedBox(height: 30),
+          //* Categories
+          Row(
             children: [
-              // * Search Bar
-              const SearchBar(),
-              const SizedBox(height: 30),
-              // * Carousel Slider for Offers
-              Offers(controller: controller, images: _images),
-              const SizedBox(height: 30),
-              //* Categories
-              Row(
-                children: [
-                  Text("Categories", style: getSemiBoldTextStyle()),
-                  const Spacer(),
-                  Text(
-                    "View All",
-                    style: getRegularTextStyle().copyWith(
-                        color: Theme.of(context).colorScheme.secondary),
-                  ),
-                ],
+              Text("Categories", style: getSemiBoldTextStyle()),
+              const Spacer(),
+              Text(
+                "View All",
+                style: getRegularTextStyle()
+                    .copyWith(color: Theme.of(context).colorScheme.secondary),
               ),
-              const SizedBox(height: 20),
-              // * Categories List
-              _categoriesChips(),
-              const SizedBox(height: 20),
-
-              // * Products
-              Products(),
             ],
           ),
-        ),
-      )),
+          const SizedBox(height: 20),
+          // * Categories List
+          _categoriesChips(),
+          const SizedBox(height: 20),
+
+          // * Products
+          Products(),
+        ],
+      ),
     );
   }
 
