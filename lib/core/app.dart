@@ -1,9 +1,9 @@
 import 'package:clothing_store/core/theme.dart';
-import 'package:clothing_store/data/services/auth_services.dart';
-import 'package:clothing_store/presentation/login/authentication_wrapper.dart';
-import 'package:clothing_store/presentation/presentation.dart';
+import 'package:clothing_store/features/authentication/data/services/auth_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../features/authentication/presentation/login/authentication_wrapper.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp._internal(); // private constructor

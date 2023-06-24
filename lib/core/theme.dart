@@ -1,5 +1,6 @@
-import '../presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
+
+import 'resources/resources.dart';
 
 ThemeData get theme => _theme;
 
