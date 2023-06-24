@@ -42,30 +42,36 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            // * Search Bar
-            const SearchBar(),
-            const SizedBox(height: 30),
-            // * Carousel Slider for Offers
-            Offers(controller: controller, images: _images),
-            const SizedBox(height: 30),
-            //* Categories
-            Row(
-              children: [
-                Text("Categories", style: getSemiBoldTextStyle()),
-                const Spacer(),
-                Text(
-                  "View All",
-                  style: getRegularTextStyle()
-                      .copyWith(color: Theme.of(context).colorScheme.secondary),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // * Categories List
-            _categoriesChips(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // * Search Bar
+              const SearchBar(),
+              const SizedBox(height: 30),
+              // * Carousel Slider for Offers
+              Offers(controller: controller, images: _images),
+              const SizedBox(height: 30),
+              //* Categories
+              Row(
+                children: [
+                  Text("Categories", style: getSemiBoldTextStyle()),
+                  const Spacer(),
+                  Text(
+                    "View All",
+                    style: getRegularTextStyle().copyWith(
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // * Categories List
+              _categoriesChips(),
+              const SizedBox(height: 20),
+
+              // * Products
+              Products(),
+            ],
+          ),
         ),
       )),
     );
@@ -89,6 +95,85 @@ class _HomeViewState extends State<HomeView> {
         },
         itemCount: _categories.length,
         scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
+
+class Products extends StatelessWidget {
+  const Products({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.65,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+      ),
+      itemBuilder: (context, index) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.network(
+                'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "Blue Kurthi",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: getSemiBoldTextStyle(size: 18),
+            ),
+            const PriceText(2598.99, priceWithoutDiscount: 3200.99)
+          ],
+        );
+      },
+      itemCount: 10,
+    );
+  }
+}
+
+class PriceText extends StatelessWidget {
+  const PriceText(
+    this.price, {
+    this.priceWithoutDiscount,
+    super.key,
+  });
+  final double price;
+  final double? priceWithoutDiscount;
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "Rs. ${priceWithoutDiscount?.toStringAsFixed(2)}",
+              style: getRegularTextStyle().copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+                decoration: TextDecoration.lineThrough,
+              ),
+            ),
+            TextSpan(
+              text: "  Rs. ${price.toStringAsFixed(2)}",
+              style: getRegularTextStyle().copyWith(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
