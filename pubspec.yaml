@@ -47,6 +47,7 @@ dependencies:
   dartz: ^0.10.1
   get_it: ^7.6.0
   provider: ^6.0.5
+  infinite_carousel: ^1.0.2
 
 dev_dependencies:
   flutter_test:
