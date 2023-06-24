@@ -1,3 +1,5 @@
+import 'package:clothing_store/core/resources/font_manager.dart';
+import 'package:clothing_store/core/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 
@@ -16,6 +18,18 @@ class _HomeViewState extends State<HomeView> {
     'https://www.informalnewz.com/wp-content/uploads/2022/11/Meesho-launches.jpg',
     'https://www.voiceofentrepreneur.com/wp-content/uploads/2021/10/244399434_1578769505814795_237892040837641265_n.png',
   ];
+  final _categories = [
+    'All',
+    'T-Shirt',
+    'Shirt',
+    'Jeans',
+    'Shoes',
+    'T-Shirt',
+    'Shirt',
+    'Jeans',
+    'Shoes',
+  ];
+  int _selectedCategoryIndex = 0;
   @override
   void dispose() {
     controller.dispose();
@@ -32,12 +46,86 @@ class _HomeViewState extends State<HomeView> {
           children: [
             // * Search Bar
             const SearchBar(),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             // * Carousel Slider for Offers
-            Offers(controller: controller, images: _images)
+            Offers(controller: controller, images: _images),
+            const SizedBox(height: 30),
+            //* Categories
+            Row(
+              children: [
+                Text("Categories", style: getSemiBoldTextStyle()),
+                const Spacer(),
+                Text(
+                  "View All",
+                  style: getRegularTextStyle()
+                      .copyWith(color: Theme.of(context).colorScheme.secondary),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            // * Categories List
+            _categoriesChips(),
           ],
         ),
       )),
+    );
+  }
+
+  SizedBox _categoriesChips() {
+    return SizedBox(
+      height: 60,
+      child: ListView.separated(
+        separatorBuilder: (context, _) => const SizedBox(width: 10),
+        itemBuilder: (context, index) {
+          return CustomCategoryChip(
+            _categories[index],
+            isSelected: _selectedCategoryIndex == index,
+            onTap: () {
+              setState(() {
+                _selectedCategoryIndex = index;
+              });
+            },
+          );
+        },
+        itemCount: _categories.length,
+        scrollDirection: Axis.horizontal,
+      ),
+    );
+  }
+}
+
+class CustomCategoryChip extends StatelessWidget {
+  const CustomCategoryChip(
+    this.title, {
+    this.isSelected = false,
+    this.onTap,
+    super.key,
+  });
+  final String title;
+  final bool isSelected;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Chip(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+          side: !isSelected
+              ? const BorderSide(color: ColorManager.grey)
+              : BorderSide.none,
+        ),
+        label: Text(
+          title,
+          style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                fontSize: 20,
+                color: isSelected ? ColorManager.white : ColorManager.grey,
+              ),
+        ),
+        backgroundColor: isSelected ? ColorManager.black : ColorManager.white,
+      ),
     );
   }
 }
