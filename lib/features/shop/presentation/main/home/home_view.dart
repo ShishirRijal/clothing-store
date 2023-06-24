@@ -1,4 +1,3 @@
-import 'package:clothing_store/core/resources/font_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
@@ -65,7 +64,7 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(height: 20),
 
           // * Products
-          Products(),
+          const Products(),
         ],
       ),
     );

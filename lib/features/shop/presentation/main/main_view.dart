@@ -1,4 +1,8 @@
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/shop/presentation/main/cart_view.dart';
+import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
+import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
+import 'package:clothing_store/features/shop/presentation/main/search_view.dart';
 
 import 'home/home_view.dart';
 import 'package:flutter/material.dart';
@@ -14,10 +18,10 @@ class _MainViewState extends State<MainView> {
   late int _selectedIndex;
   List<Widget> pages = const [
     HomeView(),
-    HomeView(),
-    HomeView(),
-    HomeView(),
-    HomeView(),
+    SearchView(),
+    CartView(),
+    FavouritesView(),
+    ProfileView(),
   ];
   @override
   void initState() {
