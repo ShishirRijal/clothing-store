@@ -18,8 +18,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     'https://www.kessa.com/wp-content/uploads/2020/08/kessa-ws564-floral-labyrinth-short-kurti-closeup-hd.jpg',
   ];
   final clothSize = ['S', 'M', 'L', 'XL', 'XXL'];
+  final colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
   final controller = PageController();
   int selectedSizeIndex = 0;
+  int selectedColorIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -81,6 +83,33 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 style: getRegularTextStyle(size: 18, color: ColorManager.grey),
               ),
               const SizedBox(height: 20),
+
+              Text(
+                "Select Color",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                  height: 50,
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 15),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: colors.length,
+                      itemBuilder: (context, index) {
+                        return ColorButton(
+                          color: colors[index],
+                          isSelected: selectedColorIndex == index,
+                          onPressed: () {
+                            setState(() {
+                              selectedColorIndex = index;
+                            });
+                          },
+                        );
+                      })),
+
+              const SizedBox(height: 20),
+
               // * Size
               Row(
                 children: [
@@ -125,6 +154,32 @@ class _ProductDetailViewState extends State<ProductDetailView> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ColorButton extends StatelessWidget {
+  const ColorButton({
+    required this.color,
+    this.isSelected = false,
+    this.onPressed,
+    super.key,
+  });
+  final Color color;
+  final bool isSelected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+          height: 40,
+          width: 40,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          child: !isSelected
+              ? null
+              : const Icon(Icons.check, color: Colors.white)),
     );
   }
 }
