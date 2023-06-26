@@ -1,6 +1,6 @@
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -89,9 +89,14 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const Spacer(),
-                  Text(
-                    "Size Chart",
-                    style: Theme.of(context).textTheme.labelLarge,
+                  GestureDetector(
+                    onTap: () {
+                      // display size pdf
+                    },
+                    child: Text(
+                      "Size Chart",
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
                 ],
               ),
@@ -113,10 +118,59 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                           });
                         });
                       })),
+
+              const SizedBox(height: 30),
+              const AddToCart(),
             ]),
           ),
         ),
       ),
+    );
+  }
+}
+
+class AddToCart extends StatelessWidget {
+  const AddToCart({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Rs. 2599.99\n",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        decoration: TextDecoration.lineThrough,
+                        color: ColorManager.grey,
+                        // fontWeight: FontWeightManager.semiBold,
+                      ),
+                ),
+                TextSpan(
+                  text: "Rs. 1199.99",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeightManager.semiBold,
+                        fontSize: 22,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: CustomButton(
+            title: 'Add to cart',
+            width: 50,
+            onPressed: () {
+              // add to cart
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -195,7 +249,8 @@ class HeroImage extends StatelessWidget {
             textDirection: TextDirection.ltr,
             effect: const ExpandingDotsEffect(
               expansionFactor: 2,
-              dotHeight: 15,
+              dotWidth: 10,
+              dotHeight: 10,
             ),
           ),
         ),
