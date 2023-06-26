@@ -17,20 +17,21 @@ class _ProductDetailViewState extends State<ProductDetailView> {
     'https://i.pinimg.com/736x/94/68/d7/9468d7bc427062875b080ccadb79aff1.jpg',
     'https://www.kessa.com/wp-content/uploads/2020/08/kessa-ws564-floral-labyrinth-short-kurti-closeup-hd.jpg',
   ];
+  final clothSize = ['S', 'M', 'L', 'XL', 'XXL'];
   final controller = PageController();
-
+  int selectedSizeIndex = 0;
   @override
   void initState() {
     super.initState();
     controller.addListener(() {
       setState(() {});
     });
+  }
 
-    @override
-    void dispose() {
-      controller.dispose();
-      super.dispose();
-    }
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,30 +56,105 @@ class _ProductDetailViewState extends State<ProductDetailView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            // * Product Image
-            HeroImage(images: images, controller: controller),
-            const SizedBox(height: 20),
-            //* Product Name
-            Text(
-              "Traditional Blue Kurthi",
-              style: getSemiBoldTextStyle(size: 22),
+          child: SingleChildScrollView(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              // * Product Image
+              HeroImage(images: images, controller: controller),
+              const SizedBox(height: 20),
+              //* Product Name
+              Text(
+                "Traditional Blue Kurthi",
+                style: getSemiBoldTextStyle(size: 22),
+              ),
+              const SizedBox(height: 10),
+              // Ratings and reviews
+              const RatingAndReview(),
+              const SizedBox(height: 20),
+              // * Description
+              ReadMoreText(
+                "This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes. This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes. This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes and colors.",
+                trimLength: 160,
+                trimExpandedText: ' Read less',
+                trimCollapsedText: 'Read more',
+                trimMode: TrimMode.Length,
+                style: getRegularTextStyle(size: 18, color: ColorManager.grey),
+              ),
+              const SizedBox(height: 20),
+              // * Size
+              Row(
+                children: [
+                  Text(
+                    "Select Size",
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const Spacer(),
+                  Text(
+                    "Size Chart",
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              // * Size Buttons
+              SizedBox(
+                  height: 50,
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 15),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: clothSize.length,
+                      itemBuilder: (context, index) {
+                        return SizeButton(clothSize[index],
+                            isSelected: index == selectedSizeIndex,
+                            onPressed: () {
+                          setState(() {
+                            selectedSizeIndex = index;
+                          });
+                        });
+                      })),
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// SizeButtons
+class SizeButton extends StatelessWidget {
+  const SizeButton(
+    this.size, {
+    this.isSelected = false,
+    this.onPressed,
+    super.key,
+  });
+  final String size;
+  final bool isSelected;
+  final VoidCallback? onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(getSemiBoldTextStyle(
+              color: isSelected ? ColorManager.white : ColorManager.black)),
+          backgroundColor: MaterialStatePropertyAll(
+              isSelected ? ColorManager.accent : ColorManager.white),
+          shape: MaterialStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: ColorManager.grey,
+              ),
             ),
-            const SizedBox(height: 10),
-            // Ratings and reviews
-            const RatingAndReview(),
-            const SizedBox(height: 20),
-            // * Description
-            ReadMoreText(
-              "This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes. This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes. This is a traditional blue kurthi with a beautiful design. It is made of cotton and is very comfortable to wear. It is available in all sizes and colors.",
-              trimLength: 160,
-              trimExpandedText: ' Read less',
-              trimCollapsedText: 'Read more',
-              trimMode: TrimMode.Length,
-              style: getRegularTextStyle(size: 18, color: ColorManager.grey),
-            ),
-          ]),
+          ),
+        ),
+        child: Text(
+          size,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
     );
