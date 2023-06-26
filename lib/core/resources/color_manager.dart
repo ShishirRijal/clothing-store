@@ -8,4 +8,5 @@ class ColorManager {
   static const Color error = Color(0XFFE61F34);
   static const Color success = Colors.green;
   static const Color grey = Color(0XFF9E9E9E);
+  static const Color lightGrey = Color(0xFFECECEC);
 }

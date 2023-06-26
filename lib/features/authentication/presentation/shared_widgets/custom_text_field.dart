@@ -5,9 +5,9 @@ import '../../../../core/resources/resources.dart';
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
-    required this.label,
+    this.label,
     required this.errorText,
-    required this.icon,
+    this.icon,
     required this.onChange,
     this.hintText,
     this.isObscure = false,
@@ -17,10 +17,10 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
   }) : super(key: key);
   final Function(String) onChange;
-  final String label;
+  final String? label;
   final String? hintText;
   final String? errorText;
-  final IconData icon;
+  final IconData? icon;
   final bool isObscure;
   final String? initialValue;
   final FocusNode? focusNode;
@@ -30,6 +30,9 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTapOutside: (_) {
+        FocusScope.of(context).unfocus();
+      },
       textInputAction: textInputAction,
       initialValue: initialValue,
       focusNode: focusNode,

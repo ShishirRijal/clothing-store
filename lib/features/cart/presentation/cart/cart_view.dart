@@ -1,3 +1,4 @@
+import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/resources.dart';
@@ -18,12 +19,127 @@ class CartView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            CustomCartItem(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: const [
+              // * Cart Items
+              CustomCartItem(),
+              SizedBox(height: 20),
+              CustomCartItem(),
+              SizedBox(height: 20),
+              CustomCartItem(),
+              SizedBox(height: 20),
+              CustomCartItem(),
+              SizedBox(height: 20),
+              CustomCartItem(),
+              //  SizedBox(height: 20),
+              // CustomCartItem(),
+              //  SizedBox(height: 20),
+              // CustomCartItem(),
+              //  SizedBox(height: 20),
+              // * Promo Code
+              SizedBox(height: 40),
+              PromoCode(),
+              SizedBox(height: 20),
+              // * Checkout
+              Checkout(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class Checkout extends StatelessWidget {
+  const Checkout({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // * Total
+        const _Price(title: 'Sub-total', price: 5000),
+        const SizedBox(height: 10),
+        const _Price(title: 'Discount', price: 1100),
+        const SizedBox(height: 10),
+        const _Price(title: 'Delivery', price: 220),
+        const SizedBox(height: 10),
+        // dot dot line
+        const Divider(thickness: 0.5, color: ColorManager.grey),
+        const SizedBox(height: 10),
+        const _Price(title: 'Total', price: 3670),
+        const SizedBox(height: 20),
+        // * Checkout
+        CustomButton(
+          title: 'Checkout',
+          bgColor: ColorManager.primary,
+          onPressed: () {
+            //
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class PromoCode extends StatelessWidget {
+  const PromoCode({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        // color: ColorManager.lightGrey,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: CustomTextField(
+              onChange: (_) {
+                //
+              },
+              hintText: 'Enter Promo Code',
+              errorText: null,
+            ),
+          ),
+          const SizedBox(width: 10),
+          CustomButton(
+            title: 'Apply',
+            width: 120,
+            bgColor: ColorManager.primary,
+            onPressed: () {
+              //
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Price extends StatelessWidget {
+  const _Price({
+    required this.title,
+    required this.price,
+  });
+  final String title;
+  final double price;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(title,
+            style: getSemiBoldTextStyle(color: ColorManager.grey, size: 18)),
+        const Spacer(),
+        Text("Rs. ${price.toStringAsFixed(0)}",
+            style: getSemiBoldTextStyle(size: 18)),
+      ],
     );
   }
 }
@@ -45,7 +161,7 @@ class _CustomCartItemState extends State<CustomCartItem> {
       // padding: const EdgeInsets.all(10),
       height: 130,
       decoration: BoxDecoration(
-        color: const Color(0xFFECECEC),
+        color: ColorManager.lightGrey,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(children: [
