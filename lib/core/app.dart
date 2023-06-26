@@ -5,6 +5,8 @@ import 'package:clothing_store/features/shop/presentation/product_detail/product
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../features/shop/presentation/main/home/home_view.dart';
+
 class MyApp extends StatelessWidget {
   const MyApp._internal(); // private constructor
 
@@ -22,7 +24,13 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: theme,
-        home: const ProductDetailView(),
+        home: const Scaffold(
+            body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(20.0),
+            child: HomeView(),
+          ),
+        )),
         // home: Builder(builder: (context) {
         //   return StreamProvider(
         //     create: (_) => context.read<AuthServices>().authStateChanges,

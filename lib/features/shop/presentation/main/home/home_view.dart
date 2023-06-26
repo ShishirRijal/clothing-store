@@ -1,4 +1,5 @@
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/shop/presentation/product_detail/product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 
@@ -114,11 +115,20 @@ class Products extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
-                fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () {
+                // to to product detail screen
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductDetailView()));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(height: 10),
