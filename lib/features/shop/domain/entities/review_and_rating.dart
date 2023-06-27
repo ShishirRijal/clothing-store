@@ -14,4 +14,14 @@ class ReviewAndRating {
     required this.reviewCount,
     required this.ratingCount,
   });
+
+  // initialize empty
+  ReviewAndRating.empty({
+    this.id = '',
+    this.user = '',
+    this.review = '',
+    this.rating = 0,
+    this.ratingCount = 0,
+    this.reviewCount = 0,
+  });
 }

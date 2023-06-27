@@ -1,5 +1,7 @@
-import 'package:clothing_store/features/shop/data/models/review_model.dart';
+import 'package:clothing_store/features/shop/data/models/review_and_rating_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+@JsonSerializable()
 class ProductModel {
   String? id;
   String? name;
@@ -25,4 +27,6 @@ class ProductModel {
     this.availableColors,
     this.availableSizes,
   });
+
+  // from json
 }
