@@ -212,7 +212,7 @@ class CustomCategoryChip extends StatelessWidget {
                 color: isSelected ? ColorManager.white : ColorManager.grey,
               ),
         ),
-        backgroundColor: isSelected ? ColorManager.black : ColorManager.white,
+        backgroundColor: isSelected ? ColorManager.primary : ColorManager.white,
       ),
     );
   }

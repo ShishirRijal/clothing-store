@@ -1,8 +1,6 @@
 import 'package:clothing_store/core/theme.dart';
 import 'package:clothing_store/features/authentication/data/services/auth_services.dart';
-import 'package:clothing_store/features/checkout/presentation/checkout/checkout_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/main_view.dart';
-import 'package:clothing_store/features/shop/shop.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

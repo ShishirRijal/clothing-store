@@ -2,6 +2,7 @@ import 'package:clothing_store/features/authentication/presentation/shared_widge
 import 'package:flutter/material.dart';
 
 import '../../../../core/resources/resources.dart';
+import '../../../checkout/presentation/checkout/checkout_view.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
@@ -73,9 +74,9 @@ class Checkout extends StatelessWidget {
         // * Checkout
         CustomButton(
           title: 'Checkout',
-          bgColor: ColorManager.primary,
           onPressed: () {
-            //
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const CheckoutView()));
           },
         ),
       ],
@@ -111,7 +112,6 @@ class PromoCode extends StatelessWidget {
           CustomButton(
             title: 'Apply',
             width: 120,
-            bgColor: ColorManager.primary,
             onPressed: () {
               //
             },
