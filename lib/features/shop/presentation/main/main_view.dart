@@ -1,9 +1,8 @@
 import 'package:clothing_store/core/resources/resources.dart';
-import 'package:clothing_store/features/shop/presentation/main/cart_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
-import 'package:clothing_store/features/shop/presentation/main/search_view.dart';
 
+import '../../../cart/cart.dart';
 import 'home/home_view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +17,8 @@ class _MainViewState extends State<MainView> {
   late int _selectedIndex;
   List<Widget> pages = const [
     HomeView(),
-    SearchView(),
-    CartView(),
     FavouritesView(),
+    CartView(),
     ProfileView(),
   ];
   @override
@@ -50,11 +48,10 @@ class _MainViewState extends State<MainView> {
           onTap: (index) => setState(() => _selectedIndex = index),
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_basket_outlined), label: "Cart"),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_border), label: "Favourite"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_basket_outlined), label: "Cart"),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ]),
     );
