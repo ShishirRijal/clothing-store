@@ -1,5 +1,6 @@
 import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/shop/presentation/my_account/my_account_view.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -68,10 +69,13 @@ class ProfileView extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           // menus
-          const CustomProfileMenuItem(
+          CustomProfileMenuItem(
             icon: Icons.person,
             title: 'My Account',
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const MyAccountView())),
           ),
+
           const SizedBox(height: 20),
           const CustomProfileMenuItem(
             icon: Icons.notifications,
@@ -113,6 +117,7 @@ class CustomProfileMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onPressed,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       tileColor: ColorManager.lightGrey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

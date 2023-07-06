@@ -15,6 +15,11 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.keyboardType,
+    this.controller,
+    this.filled = false,
+    this.fillColor,
+    this.enabled = true,
+    this.style,
   }) : super(key: key);
   final Function(String) onChange;
   final String? label;
@@ -26,32 +31,49 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
+  final TextEditingController? controller;
+  final bool filled;
+  final bool enabled;
+  final Color? fillColor;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
+      textAlign: TextAlign.start,
+      textAlignVertical: TextAlignVertical.center,
       textInputAction: textInputAction,
       initialValue: initialValue,
       focusNode: focusNode,
       onChanged: (value) {
         onChange(value);
       },
-      style: getRegularTextStyle(),
+      enabled: enabled,
+      style: style ?? getRegularTextStyle(),
       obscureText: isObscure,
       decoration: InputDecoration(
+        filled: filled,
+        fillColor: fillColor,
         errorText: errorText,
         // floatingLabelBehavior: FloatingLabelBehavior.never,
         labelText: label,
         hintText: isObscure ? "Create a strong password" : hintText,
-        prefixIcon: Icon(
-          icon,
-          color: ColorManager.primary,
-        ),
+        prefixIcon: icon != null
+            ? Icon(
+                icon,
+                color: ColorManager.primary,
+              )
+            : null,
         labelStyle: getRegularTextStyle(),
         hintStyle: getRegularTextStyle(color: ColorManager.grey),
+        disabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: ColorManager.primary, width: 1.0),
+          borderRadius: BorderRadius.circular(12.0),
+        ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: ColorManager.primary, width: 1.0),
           borderRadius: BorderRadius.circular(12.0),

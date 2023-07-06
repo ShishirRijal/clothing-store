@@ -161,6 +161,7 @@ class PaymentMethod extends StatelessWidget {
     this.isSelected = false,
     required this.icon,
     this.onPressed,
+    this.showSelect = true,
     super.key,
   });
   final IconData icon;
@@ -168,6 +169,7 @@ class PaymentMethod extends StatelessWidget {
   final String cardNumber;
   final bool isSelected;
   final VoidCallback? onPressed;
+  final bool showSelect;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -191,15 +193,16 @@ class PaymentMethod extends StatelessWidget {
           ],
         ),
         const Spacer(),
-        Checkbox(
-            // padding
+        if (showSelect)
+          Checkbox(
+              // padding
 
-            value: isSelected,
-            onChanged: (_) {
-              onPressed!();
-            },
-            shape: const CircleBorder(),
-            activeColor: ColorManager.accent),
+              value: isSelected,
+              onChanged: (_) {
+                onPressed!();
+              },
+              shape: const CircleBorder(),
+              activeColor: ColorManager.accent),
       ],
     );
   }
