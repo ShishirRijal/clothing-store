@@ -4,6 +4,7 @@ class AssetManager {
 
   // images
   static const logo = '$_imagePath/logo.png';
+  static const profile = '$_imagePath/profile.png';
 
   // json
   static const loading = '$_jsonPath/loading.json';

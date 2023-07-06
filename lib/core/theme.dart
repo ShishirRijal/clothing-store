@@ -14,6 +14,7 @@ ThemeData _theme = ThemeData(
   textTheme: TextTheme(
     //* display
     headlineLarge: getBoldTextStyle(size: 24),
+    headlineMedium: getSemiBoldTextStyle(size: 24),
     headlineSmall: getSemiBoldTextStyle(size: 20),
     //* Body
     bodyLarge: getRegularTextStyle(size: 18),

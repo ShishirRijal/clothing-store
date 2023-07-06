@@ -123,13 +123,14 @@ class Products extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const ProductDetailView()));
               },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
-                  fit: BoxFit.cover,
-                ),
-              ),
+              child: SizedBox(height: 10),
+              // child: ClipRRect(
+              //   borderRadius: BorderRadius.circular(15),
+              //   child: Image.network(
+              //     'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
             ),
             const SizedBox(height: 10),
             Text(
@@ -245,10 +246,10 @@ class Offers extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                image: NetworkImage(_images[itemIndex % 4]),
-                fit: BoxFit.fill,
-              ),
+              // image: DecorationImage(
+              //   image: NetworkImage(_images[itemIndex % 4]),
+              //   fit: BoxFit.fill,
+              // ),
             ),
           );
         },
