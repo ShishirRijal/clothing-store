@@ -19,6 +19,8 @@ class CustomTextField extends StatelessWidget {
     this.filled = false,
     this.fillColor,
     this.enabled = true,
+    this.maxLines,
+    this.minLines,
     this.style,
   }) : super(key: key);
   final Function(String) onChange;
@@ -36,6 +38,8 @@ class CustomTextField extends StatelessWidget {
   final bool enabled;
   final Color? fillColor;
   final TextStyle? style;
+  final int? maxLines;
+  final int? minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +53,8 @@ class CustomTextField extends StatelessWidget {
       textInputAction: textInputAction,
       initialValue: initialValue,
       focusNode: focusNode,
+      minLines: minLines,
+      maxLines: maxLines,
       onChanged: (value) {
         onChange(value);
       },
