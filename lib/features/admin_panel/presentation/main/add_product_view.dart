@@ -1,7 +1,11 @@
+import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/admin_panel/domain/domain.dart';
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
+import 'package:clothing_store/features/shop/domain/entities/review_and_rating.dart';
 import 'package:flutter/material.dart';
 
+import '../../../shop/domain/entities/product.dart';
 import '../../../shop/shop.dart';
 
 class AddProductView extends StatefulWidget {
@@ -233,7 +237,9 @@ class _AddProductViewState extends State<AddProductView> {
 
                 CustomButton(
                   title: 'Add Product',
-                  onPressed: () {},
+                  onPressed: () {
+                    //
+                  },
                 )
               ],
             ),
@@ -267,9 +273,9 @@ class CategoryButton extends StatelessWidget {
           style: isSelected
               ? Theme.of(context)
                   .textTheme
-                  .headlineSmall!
+                  .bodyLarge!
                   .copyWith(color: ColorManager.white)
-              : Theme.of(context).textTheme.headlineSmall,
+              : Theme.of(context).textTheme.bodyLarge,
         ),
       ),
     );

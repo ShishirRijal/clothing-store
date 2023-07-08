@@ -29,9 +29,7 @@ Future<void> setup() async {
   // auth repo
   getIt.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImpl(networkInfo: getIt(), firebaseAuth: getIt()));
-  // product repository
-  getIt.registerLazySingleton<ProductRepository>(
-      () => ProductRepositoryImpl(networkInfo: getIt(), firestore: getIt()));
+
   // Login usecase
   getIt.registerLazySingleton<LoginUseCase>(
       () => LoginUseCase(authRepository: getIt()));
@@ -44,4 +42,13 @@ Future<void> setup() async {
   // Forgot password usecase
   getIt.registerLazySingleton<ForgetPasswordUseCase>(
       () => ForgetPasswordUseCase(authRepository: getIt()));
+
+  //*  Admin Panel
+  // product repository
+  getIt.registerLazySingleton<ProductRepository>(
+      () => ProductRepositoryImpl(networkInfo: getIt(), firestore: getIt()));
+
+  // add product usecase
+  getIt.registerLazySingleton<AddProductUseCase>(
+      () => AddProductUseCase(repository: getIt()));
 }

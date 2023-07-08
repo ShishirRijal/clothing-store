@@ -11,11 +11,12 @@ extension ProductMapper on ProductModel? {
       name: this?.name ?? '',
       brand: this?.brand ?? '',
       description: this?.description ?? '',
-      image: this?.image ?? [],
+      image: this?.image ?? '',
       price: this?.price ?? 0,
+      quantity: this?.quantity ?? 0,
       reviewAndRating:
           this?.reviewAndRating?.toEntity() ?? ReviewAndRating.empty(),
-      category: this?.category ?? '',
+      categories: this?.categories ?? [],
       availableSizes: this?.availableSizes ?? [],
       availableColors: this?.availableColors ?? [],
     );

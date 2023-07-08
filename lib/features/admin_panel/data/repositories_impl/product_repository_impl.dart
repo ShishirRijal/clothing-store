@@ -19,7 +19,15 @@ class ProductRepositoryImpl extends ProductRepository {
   Future<Either<Failure, void>> addProduct(Product product) async {
     if (await networkInfo.isConnected) {
       try {
-        await firestore.collection('products').add(product.toJson());
+        //get a unique id from firebase
+        String productId = firestore.collection('products').doc().id;
+        //add new product to firebase with uid as id
+        product.id = productId;
+        await firestore
+            .collection('products')
+            .doc(productId)
+            .set(product.toJson());
+
         return const Right(null);
       } on FirebaseException catch (e) {
         return Left(Failure(

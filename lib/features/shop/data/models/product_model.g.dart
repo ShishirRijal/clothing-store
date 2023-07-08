@@ -11,20 +11,22 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       name: json['name'] as String?,
       brand: json['brand'] as String?,
       description: json['description'] as String?,
-      image:
-          (json['image'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      image: json['image'] as String?,
       price: (json['price'] as num?)?.toDouble(),
       reviewAndRating: json['reviewAndRating'] == null
           ? null
           : ReviewAndRatingModel.fromJson(
               json['reviewAndRating'] as Map<String, dynamic>),
-      category: json['category'] as String?,
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       availableColors: (json['availableColors'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
       availableSizes: (json['availableSizes'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      quantity: json['quantity'] as int?,
     );
 
 Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
@@ -36,7 +38,8 @@ Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
       'image': instance.image,
       'price': instance.price,
       'reviewAndRating': instance.reviewAndRating,
-      'category': instance.category,
+      'categories': instance.categories,
       'availableSizes': instance.availableSizes,
       'availableColors': instance.availableColors,
+      'quantity': instance.quantity,
     };

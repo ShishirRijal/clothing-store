@@ -5,9 +5,9 @@ import 'package:clothing_store/features/authentication/data/failure/failure.dart
 
 import '../../../shop/domain/entities/product.dart';
 
-class AddProduct extends BaseUseCase<Product, void> {
+class AddProductUseCase extends BaseUseCase<Product, void> {
   ProductRepository repository;
-  AddProduct({required this.repository});
+  AddProductUseCase({required this.repository});
   @override
   // ignore: avoid_renaming_method_parameters
   Future<Either<Failure, void>> call(Product product) {
