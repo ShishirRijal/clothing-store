@@ -1,6 +1,13 @@
+import 'dart:ffi';
+
+import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/admin_panel/presentation/notification/notification_view.dart';
+import 'package:clothing_store/features/authentication/domain/usecases/logout_usecase.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../core/base_usecase.dart';
 
 class AdminProfileView extends StatelessWidget {
   const AdminProfileView({super.key});
@@ -47,21 +54,19 @@ class AdminProfileView extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         Text(
-          'Bhattarai Kirana Pasal',
+          'Bhattarai Fancy',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 40),
         // menus
 
-        const CustomProfileMenuItem(
-          icon: Icons.settings,
-          title: 'Settings',
-        ),
-        const SizedBox(height: 20),
-
-        const CustomProfileMenuItem(
+        CustomProfileMenuItem(
           icon: Icons.notifications,
           title: 'Notifications',
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NotificationView())),
         ),
         const SizedBox(height: 20),
 
@@ -70,9 +75,12 @@ class AdminProfileView extends StatelessWidget {
           title: 'Help Center',
         ),
         const SizedBox(height: 20),
-        const CustomProfileMenuItem(
+        CustomProfileMenuItem(
           icon: Icons.logout,
           title: 'Logout',
+          onPressed: () {
+            getIt<LogoutUseCase>().call(const NoParams());
+          },
         ),
         const SizedBox(height: 20),
       ]),

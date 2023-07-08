@@ -1,6 +1,7 @@
 import 'package:clothing_store/core/di.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/base_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 
 class HomeView extends StatelessWidget {
@@ -23,7 +24,7 @@ class HomeView extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  logoutUseCase.call(null);
+                  logoutUseCase.call(const NoParams());
                 },
                 child: const Text("Logout"))
           ],

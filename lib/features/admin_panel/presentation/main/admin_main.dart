@@ -21,6 +21,7 @@ class _AdminMainViewState extends State<AdminMainView> {
     AddProductView(),
     AdminProfileView(),
   ];
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +30,11 @@ class _AdminMainViewState extends State<AdminMainView> {
 
   @override
   Widget build(BuildContext context) {
+    String appBarTitle = _selectedIndex == 0
+        ? 'Dashboard'
+        : _selectedIndex == 1
+            ? 'Add Product'
+            : 'Profile';
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AddProductViewModel>(
@@ -36,6 +42,9 @@ class _AdminMainViewState extends State<AdminMainView> {
         ),
       ],
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(appBarTitle),
+        ),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),
