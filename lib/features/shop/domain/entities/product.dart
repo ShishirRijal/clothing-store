@@ -1,5 +1,9 @@
-import 'review_and_rating.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'review_and_rating.dart';
+part 'product.g.dart';
+
+@JsonSerializable()
 class Product {
   String id;
   String name;
@@ -24,4 +28,11 @@ class Product {
     required this.availableColors,
     required this.availableSizes,
   });
+
+  // to json method
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
+
+  // from json
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 }
