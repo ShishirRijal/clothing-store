@@ -1,4 +1,3 @@
-import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/models/report.dart';

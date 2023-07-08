@@ -186,7 +186,6 @@ class _AddProductViewState extends State<AddProductView> {
                             }
                             setState(() {});
                           });
-                          ;
                         })),
 
                 const SizedBox(height: 20),
