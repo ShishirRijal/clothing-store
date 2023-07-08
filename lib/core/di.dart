@@ -2,7 +2,6 @@ import 'package:clothing_store/features/admin_panel/data/repositories_impl/produ
 import 'package:clothing_store/features/admin_panel/domain/domain.dart';
 import 'package:clothing_store/features/authentication/domain/usecases/forget_password_usecase.dart';
 import 'package:clothing_store/features/authentication/domain/usecases/logout_usecase.dart';
-import 'package:clothing_store/features/shop/domain/entities/product.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';

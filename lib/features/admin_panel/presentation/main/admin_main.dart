@@ -1,9 +1,11 @@
 import 'package:clothing_store/core/resources/resources.dart';
-import 'package:clothing_store/features/admin_panel/presentation/main/add_product_view.dart';
+import 'package:clothing_store/features/admin_panel/presentation/main/add_product/add_product_view.dart';
+import 'package:clothing_store/features/admin_panel/presentation/main/add_product/add_product_viewmodel.dart';
 import 'package:clothing_store/features/admin_panel/presentation/main/admin_home_view.dart';
 import 'package:clothing_store/features/admin_panel/presentation/main/admin_profile_view.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminMainView extends StatefulWidget {
   const AdminMainView({this.index = 0, super.key});
@@ -27,28 +29,35 @@ class _AdminMainViewState extends State<AdminMainView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: _pages[_selectedIndex],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AddProductViewModel>(
+          create: (_) => AddProductViewModel(),
         ),
-      ),
+      ],
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: _pages[_selectedIndex],
+          ),
+        ),
 
-      // * Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: ColorManager.lightGrey,
-        selectedIconTheme: const IconThemeData(size: 30),
-        unselectedIconTheme: const IconThemeData(size: 28),
-        selectedItemColor: ColorManager.primary,
-        unselectedItemColor: ColorManager.grey,
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
+        // * Bottom Navigation Bar
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: ColorManager.lightGrey,
+          selectedIconTheme: const IconThemeData(size: 30),
+          unselectedIconTheme: const IconThemeData(size: 28),
+          selectedItemColor: ColorManager.primary,
+          unselectedItemColor: ColorManager.grey,
+          currentIndex: _selectedIndex,
+          onTap: (index) => setState(() => _selectedIndex = index),
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          ],
+        ),
       ),
     );
   }

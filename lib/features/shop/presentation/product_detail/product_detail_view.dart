@@ -251,7 +251,7 @@ class SizeButton extends StatelessWidget {
           textStyle: MaterialStateProperty.all(getSemiBoldTextStyle(
               color: isSelected ? ColorManager.white : ColorManager.black)),
           backgroundColor: MaterialStatePropertyAll(
-              isSelected ? ColorManager.accent : ColorManager.white),
+              isSelected ? ColorManager.primary : ColorManager.white),
           shape: MaterialStatePropertyAll(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
@@ -263,7 +263,9 @@ class SizeButton extends StatelessWidget {
         ),
         child: Text(
           size,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: isSelected ? ColorManager.white : ColorManager.black,
+              ),
         ),
       ),
     );

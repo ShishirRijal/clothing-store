@@ -1,12 +1,13 @@
-import 'package:clothing_store/core/di.dart';
-import 'package:clothing_store/core/resources/resources.dart';
-import 'package:clothing_store/features/admin_panel/domain/domain.dart';
-import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
-import 'package:clothing_store/features/shop/domain/entities/review_and_rating.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-import '../../../shop/domain/entities/product.dart';
-import '../../../shop/shop.dart';
+import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/authentication/presentation/forgot_password/forgot_password_view.dart';
+import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../shop/shop.dart';
+import 'add_product_viewmodel.dart';
 
 class AddProductView extends StatefulWidget {
   const AddProductView({super.key});
@@ -16,46 +17,15 @@ class AddProductView extends StatefulWidget {
 }
 
 class _AddProductViewState extends State<AddProductView> {
-  final _colors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.yellow,
-    Colors.purple,
-    Colors.orange,
-    Colors.pink,
-    Colors.brown,
-    Colors.red,
-    Colors.blue,
-  ];
-  final _size = ['S', 'M', 'L', 'XL', 'XXL'];
-  final _categories = [
-    'T-Shirt',
-    'Shirt',
-    'Pants',
-    'Shoes',
-    'Socks',
-    'Jacket',
-    'Coat',
-    'Sweater',
-    'Hoodie',
-    'Hat',
-    'Men',
-    'Women',
-    'Kids',
-    'Accessories',
-    'Bags',
-    'Wallets',
-    'Watches',
-    'Jewelry',
-    'Sunglasses',
-    'Belts',
-  ];
-  List<String> selectedSizes = [];
-  List<Color> selectedColors = [];
-  List<String> selectedCategories = [];
+  @override
+  void dispose() {
+    // context.read<AddProductViewModel>().dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<AddProductViewModel>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -73,26 +43,40 @@ class _AddProductViewState extends State<AddProductView> {
                 // * Product Image
                 Align(
                   alignment: Alignment.center,
-                  child: Container(
-                    height: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 5,
-                          blurRadius: 13,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: IconButton(
-                        icon: const Icon(Icons.add_a_photo),
-                        onPressed: () {},
+                  child: GestureDetector(
+                    onTap: () {
+                      viewModel.selectImage();
+                    },
+                    child: Container(
+                      height: 200,
+                      width: 200,
+                      // padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.2),
+                            spreadRadius: 5,
+                            blurRadius: 13,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
+                      child: viewModel.image == null
+                          ? Center(
+                              child: IconButton(
+                                icon: const Icon(Icons.add_a_photo),
+                                onPressed: () {},
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.file(
+                                File(viewModel.image!.path),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                     ),
                   ),
                 ),
@@ -103,6 +87,7 @@ class _AddProductViewState extends State<AddProductView> {
                   errorText: null,
                   onChange: (_) {},
                   hintText: 'Product Name',
+                  controller: viewModel.productNameController,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
@@ -111,6 +96,7 @@ class _AddProductViewState extends State<AddProductView> {
                   errorText: null,
                   onChange: (_) {},
                   hintText: 'Brand Name',
+                  controller: viewModel.productBrandController,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
@@ -119,6 +105,7 @@ class _AddProductViewState extends State<AddProductView> {
                 CustomTextField(
                   errorText: null,
                   onChange: (_) {},
+                  controller: viewModel.productPriceController,
                   hintText: 'Product Price',
                   keyboardType: TextInputType.number,
                 ),
@@ -130,6 +117,7 @@ class _AddProductViewState extends State<AddProductView> {
                   errorText: null,
                   onChange: (_) {},
                   hintText: 'Product Quantity',
+                  controller: viewModel.productQuantityController,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20),
@@ -144,22 +132,17 @@ class _AddProductViewState extends State<AddProductView> {
                     height: 50,
                     child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _colors.length,
+                        itemCount: viewModel.colors.length,
                         separatorBuilder: (context, index) => const SizedBox(
                               width: 20,
                             ),
                         itemBuilder: (context, index) {
                           return _ColorBox(
-                            _colors[index],
-                            isSelected: selectedColors.contains(_colors[index]),
-                            onPressed: () {
-                              if (selectedColors.contains(_colors[index])) {
-                                selectedColors.remove(_colors[index]);
-                              } else {
-                                selectedColors.add(_colors[index]);
-                              }
-                              setState(() {});
-                            },
+                            viewModel.colors[index],
+                            isSelected: viewModel
+                                .isSelectedColor(viewModel.colors[index]),
+                            onPressed: () => viewModel
+                                .toggleSelectedColor(viewModel.colors[index]),
                           );
                         })),
 
@@ -175,21 +158,18 @@ class _AddProductViewState extends State<AddProductView> {
                     height: 50,
                     child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: _size.length,
+                        itemCount: viewModel.sizes.length,
                         separatorBuilder: (context, index) => const SizedBox(
                               width: 20,
                             ),
                         itemBuilder: (context, index) {
-                          return SizeButton(_size[index],
-                              isSelected: selectedSizes.contains(_size[index]),
-                              onPressed: () {
-                            if (selectedSizes.contains(_size[index])) {
-                              selectedSizes.remove(_size[index]);
-                            } else {
-                              selectedSizes.add(_size[index]);
-                            }
-                            setState(() {});
-                          });
+                          return SizeButton(
+                            viewModel.sizes[index],
+                            isSelected: viewModel
+                                .isSelectedSize(viewModel.sizes[index]),
+                            onPressed: () => viewModel
+                                .toggleSelectedSize(viewModel.sizes[index]),
+                          );
                         })),
 
                 const SizedBox(height: 20),
@@ -206,17 +186,12 @@ class _AddProductViewState extends State<AddProductView> {
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    for (var category in _categories)
+                    for (var category in viewModel.categories)
                       CategoryButton(category,
-                          isSelected: selectedCategories.contains(category),
-                          onPressed: () {
-                        if (selectedCategories.contains(category)) {
-                          selectedCategories.remove(category);
-                        } else {
-                          selectedCategories.add(category);
-                        }
-                        setState(() {});
-                      }),
+                          isSelected:
+                              viewModel.selectedCategories.contains(category),
+                          onPressed: () =>
+                              viewModel.toggleSelectedCategory(category)),
                   ],
                 )),
 
@@ -230,6 +205,7 @@ class _AddProductViewState extends State<AddProductView> {
                   keyboardType: TextInputType.number,
                   minLines: 7,
                   maxLines: 10,
+                  controller: viewModel.productDescriptionController,
                 ),
 
                 // * Add Product Button
@@ -237,8 +213,33 @@ class _AddProductViewState extends State<AddProductView> {
 
                 CustomButton(
                   title: 'Add Product',
-                  onPressed: () {
-                    //
+                  onPressed: () async {
+                    // * validate the inputs
+                    showDialog(
+                        context: context, builder: (context) => LoadingPopup());
+                    (await viewModel.addProduct(context)).fold((l) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      if (l.code != 1000) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => ErrorPopup(
+                                  errorText: l.message,
+                                ));
+                      }
+                    }, (r) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SuccessPopup(
+                              message: 'Product added successfully',
+                              onPressed: () {
+                                viewModel.clearFields();
+                                Navigator.pop(context);
+                              },
+                            );
+                          });
+                    });
                   },
                 )
               ],

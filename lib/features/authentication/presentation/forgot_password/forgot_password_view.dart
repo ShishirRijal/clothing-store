@@ -56,7 +56,11 @@ class ForgotPasswordFormState extends State<ForgotPasswordForm> {
           Navigator.of(context).pop();
           showDialog<void>(
             context: context,
-            builder: (_) => const SuccessDialog(),
+            builder: (_) => SuccessPopup(
+              message: 'Password reset link is sent to your email.',
+              onPressed: () => Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginView())),
+            ),
           );
         }
         if (state.status.isInProgress) {
@@ -139,18 +143,19 @@ class ResetPasswordButton extends StatelessWidget {
   }
 }
 
-class SuccessDialog extends StatelessWidget {
-  const SuccessDialog({super.key});
+class SuccessPopup extends StatelessWidget {
+  const SuccessPopup({required this.message, this.onPressed, super.key});
+  final String message;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return CustomAlertPopup(
       assetAddress: AssetManager.success,
-      text: 'Password reset link is sent to your email.',
+      text: message,
       buttonText: 'Okay',
       showButton: true,
-      onPressed: () => Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const LoginView())),
+      onPressed: onPressed,
     );
   }
 }
