@@ -1,6 +1,10 @@
+import 'package:clothing_store/core/di.dart';
+import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/authentication/data/network/network_info.dart';
 import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../cart/cart.dart';
 import 'home/home_view.dart';
@@ -21,9 +25,11 @@ class _MainViewState extends State<MainView> {
     CartView(),
     ProfileView(),
   ];
+  late Future<bool> isConnected;
   @override
   void initState() {
     super.initState();
+    isConnected = getIt<NetworkInfo>().isConnected;
     _selectedIndex = widget.index;
   }
 
@@ -33,7 +39,21 @@ class _MainViewState extends State<MainView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: pages[_selectedIndex],
+          child: FutureBuilder(
+              future: isConnected,
+              builder: (context, snapshot) {
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? const Center(
+                        child: CircularProgressIndicator(
+                        color: ColorManager.primary,
+                        strokeWidth: 3,
+                      ))
+                    : snapshot.data == false
+                        ? Center(
+                            child: LottieBuilder.asset(AssetManager.noInternet),
+                          )
+                        : pages[_selectedIndex];
+              }),
         ),
       ),
 
