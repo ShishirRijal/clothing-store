@@ -1,6 +1,7 @@
 import 'package:clothing_store/core/resources/resources.dart';
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -221,7 +222,7 @@ class AddToCart extends StatelessWidget {
             title: 'Add to cart',
             width: 50,
             onPressed: () {
-              // add to cart
+              //  context.read<Cart>();
             },
           ),
         ),
