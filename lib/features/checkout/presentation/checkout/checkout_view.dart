@@ -1,7 +1,11 @@
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
+import 'package:clothing_store/features/cart/domain/entities/cart_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/resources/resources.dart';
+import '../../../cart/presentation/providers/cart.dart';
+import 'checkout_viewmodel.dart';
 
 class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
@@ -14,6 +18,8 @@ class _CheckoutViewState extends State<CheckoutView> {
   int paymentMethodIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final cart = context.read<Cart>();
+    final checkout = context.watch<CheckoutViewModel>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -70,15 +76,13 @@ class _CheckoutViewState extends State<CheckoutView> {
               // list view builder of checkout cart item
               SizedBox(
                 height: 90,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  children: const [
-                    _CheckoutCartItem(),
-                    _CheckoutCartItem(),
-                    _CheckoutCartItem(),
-                  ],
-                ),
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: cart.cartItems.length,
+                    itemBuilder: (context, index) {
+                      return _CheckoutCartItem(cart.cartItems[index]);
+                    }),
               ),
               // total
               const SizedBox(height: 40),
@@ -86,7 +90,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Total', style: getSemiBoldTextStyle()),
-                  Text('Rs. 360.00', style: getSemiBoldTextStyle()),
+                  Text('Rs. ${cart.totalPrice}', style: getSemiBoldTextStyle()),
                 ],
               ),
               // checkout button
@@ -94,7 +98,9 @@ class _CheckoutViewState extends State<CheckoutView> {
               // pay now
               CustomButton(
                 title: 'Pay Now',
-                onPressed: () {},
+                onPressed: () {
+                  checkout.validate(context);
+                },
               )
             ],
           ),
@@ -105,7 +111,8 @@ class _CheckoutViewState extends State<CheckoutView> {
 }
 
 class _CheckoutCartItem extends StatelessWidget {
-  const _CheckoutCartItem();
+  const _CheckoutCartItem(this.cartItem);
+  final CartItem cartItem;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +128,7 @@ class _CheckoutCartItem extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: Image.network(
-              'https://thumbs.dreamstime.com/b/happy-beautiful-little-girl-shows-white-dress-having-fun-outdoors-city-53848122.jpg',
+              cartItem.product.image,
               fit: BoxFit.cover,
             ),
           ),
@@ -133,19 +140,15 @@ class _CheckoutCartItem extends StatelessWidget {
           children: [
             SizedBox(
               width: 100,
-              child: Text('Nike Air Max 270',
+              child: Text(cartItem.product.name,
                   maxLines: 2,
                   style: getMediumTextStyle(
                     size: 16,
                   )),
             ),
-            const SizedBox(height: 5),
-            Text('Size: XL',
-                style: getRegularTextStyle(size: 14, color: ColorManager.grey)),
-            const SizedBox(height: 5),
-            Text('Rs. 120.00',
-                style:
-                    getSemiBoldTextStyle(size: 16, color: ColorManager.grey)),
+            const SizedBox(height: 10),
+            Text('Rs. ${cartItem.product.price.toStringAsFixed(2)}',
+                style: getMediumTextStyle(size: 16, color: ColorManager.grey)),
           ],
         ),
       ],
@@ -236,11 +239,6 @@ class DeliveryAddress extends StatelessWidget {
             const SizedBox(height: 5),
             Text('New York, NY', style: getRegularTextStyle().copyWith()),
           ],
-        ),
-        const Spacer(),
-        const Align(
-          alignment: Alignment.topRight,
-          child: Icon(Icons.arrow_forward_ios, color: ColorManager.grey),
         ),
       ],
     );

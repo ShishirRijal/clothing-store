@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/resources/resources.dart';
 import '../../../checkout/presentation/checkout/checkout_view.dart';
+import '../../../checkout/presentation/checkout/checkout_viewmodel.dart';
 import '../../domain/entities/cart_item.dart';
 import '../providers/cart.dart';
 
@@ -72,8 +73,12 @@ class Checkout extends StatelessWidget {
         CustomButton(
           title: 'Checkout',
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const CheckoutView()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Provider(
+                        create: (_) => CheckoutViewModel(),
+                        child: const CheckoutView())));
           },
         ),
       ],
