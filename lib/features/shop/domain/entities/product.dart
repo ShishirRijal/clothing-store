@@ -53,3 +53,24 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
 }
+
+Product product = Product(
+    name: 'Red overcoat for women',
+    brand: 'Gucci',
+    description:
+        "loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum ",
+    image:
+        "https://dqp736wsu6w3m.cloudfront.net/s3bucket/og/feed/img/man_coat/636781/without_model_small.png",
+    price: 3456.99,
+    reviewAndRating: ReviewAndRating(
+      id: '948jd',
+      rating: 4.5,
+      ratingCount: 34,
+      review: 'sdhfisdhis',
+      reviewCount: 34,
+      user: 'Shishir Rijal',
+    ),
+    categories: ['coat', 'female'],
+    availableColors: ['red'],
+    availableSizes: ['XL', 'XXL', 'XXl'],
+    quantity: 23);

@@ -1,5 +1,6 @@
 import 'package:clothing_store/core/theme.dart';
 import 'package:clothing_store/features/authentication/data/services/auth_services.dart';
+import 'package:clothing_store/features/cart/presentation/providers/cart.dart';
 import 'package:clothing_store/features/shop/presentation/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // authentication provider
         Provider<AuthServices>(create: (_) => AuthServices()),
+        // cart provider
+        Provider<Cart>(create: (_) => Cart()),
       ],
       child: MaterialApp(
         theme: theme,

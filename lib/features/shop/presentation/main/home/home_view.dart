@@ -1,4 +1,5 @@
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/shop/domain/entities/product.dart';
 import 'package:clothing_store/features/shop/presentation/product_detail/product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
@@ -136,7 +137,7 @@ class HeavyDiscountedProducts extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const ProductDetailView()));
+                  builder: (context) => ProductDetailView(product)));
         },
         child: Container(
           // height: 150,
@@ -211,7 +212,7 @@ class TrendingProducts extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const ProductDetailView()));
+                  builder: (context) => ProductDetailView(product)));
         },
         child: Container(
           alignment: Alignment.bottomCenter,
@@ -285,7 +286,7 @@ class Products extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const ProductDetailView()));
+                        builder: (context) => ProductDetailView(product)));
               },
               // child: SizedBox(height: 10),
               child: ClipRRect(

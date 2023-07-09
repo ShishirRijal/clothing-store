@@ -10,12 +10,16 @@ class CartItemModel {
   ProductModel product;
   int? quantity;
   double? totalPrice;
+  List<String>? size;
+  List<String>? color;
 
   CartItemModel({
     required this.id,
     required this.product,
     required this.quantity,
     required this.totalPrice,
+    required this.size,
+    required this.color,
   });
 
   // to json

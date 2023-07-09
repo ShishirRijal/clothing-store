@@ -1,49 +1,46 @@
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/resources/resources.dart';
 import '../../../checkout/presentation/checkout/checkout_view.dart';
+import '../../domain/entities/cart_item.dart';
+import '../providers/cart.dart';
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<Cart>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: ColorManager.black),
-            onPressed: () => Navigator.pop(context)),
         title: Text('My Cart', style: getSemiBoldTextStyle()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
           child: Column(
-            children: const [
+            children: [
               // * Cart Items
-              CustomCartItem(),
-              SizedBox(height: 20),
-              CustomCartItem(),
-              SizedBox(height: 20),
-              CustomCartItem(),
-              SizedBox(height: 20),
-              CustomCartItem(),
-              SizedBox(height: 20),
-              CustomCartItem(),
-              //  SizedBox(height: 20),
-              // CustomCartItem(),
-              //  SizedBox(height: 20),
-              // CustomCartItem(),
-              //  SizedBox(height: 20),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return CustomCartItem(cart.cartItems[index]);
+                },
+                separatorBuilder: (context, _) => const SizedBox(height: 20),
+                itemCount: cart.cartItems.length,
+              ),
+
               // * Promo Code
-              SizedBox(height: 40),
-              PromoCode(),
-              SizedBox(height: 20),
+              const SizedBox(height: 40),
+              const PromoCode(),
+              const SizedBox(height: 20),
               // * Checkout
-              Checkout(),
+              const Checkout(),
             ],
           ),
         ),
@@ -145,7 +142,9 @@ class _Price extends StatelessWidget {
 }
 
 class CustomCartItem extends StatefulWidget {
-  const CustomCartItem({
+  final CartItem cartItem;
+  const CustomCartItem(
+    this.cartItem, {
     super.key,
   });
 
@@ -159,16 +158,20 @@ class _CustomCartItemState extends State<CustomCartItem> {
   Widget build(BuildContext context) {
     return Container(
       // padding: const EdgeInsets.all(10),
-      height: 130,
+      height: 170,
       decoration: BoxDecoration(
         color: ColorManager.lightGrey,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Row(children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Image.network(
-              'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg'),
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.network(widget.cartItem.product.image),
+            ),
+          ),
         ),
         const SizedBox(width: 15),
         Expanded(
@@ -176,71 +179,46 @@ class _CustomCartItemState extends State<CustomCartItem> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Traditional Blue Kurthi',
+              Text(widget.cartItem.product.name,
                   maxLines: 2,
                   style: Theme.of(context)
                       .textTheme
                       .headlineSmall!
                       .copyWith(fontSize: 18)),
               const SizedBox(height: 5),
-              Row(
-                children: [
-                  // size , color
-                  Text("Size: XL",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: ColorManager.grey,
-                          )),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.circle, size: 10, color: ColorManager.grey),
-                  const SizedBox(width: 10),
-                  Text("Color: Blue",
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: ColorManager.grey,
-                          )),
-                ],
+              Container(
+                padding: const EdgeInsets.only(right: 10),
+                height: 20,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    // size , color
+                    Text("Size: ${widget.cartItem.size.map((e) => e).toList()}",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: ColorManager.grey,
+                            )),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.circle,
+                        size: 10, color: ColorManager.grey),
+                    const SizedBox(width: 10),
+                    Text(
+                        "Color: ${widget.cartItem.color.map((e) => e).toList()}",
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: ColorManager.grey,
+                            )),
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Text('Rs. 2,500', style: getSemiBoldTextStyle(size: 18)),
-                  const Spacer(),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFECECEC),
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: ColorManager.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              quantity--;
-                            });
-                          },
-                          child: const Icon(Icons.remove,
-                              size: 25, color: ColorManager.primary),
-                        ),
-                        const SizedBox(width: 5),
-                        Text(quantity.toString(), style: getBoldTextStyle()),
-                        const SizedBox(width: 5),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              quantity++;
-                            });
-                          },
-                          child: const Icon(Icons.add,
-                              size: 25, color: ColorManager.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                ],
+              Text("Quantity: ${widget.cartItem.quantity}",
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: ColorManager.grey,
+                      )),
+              const SizedBox(height: 10),
+              FittedBox(
+                child: Text('Rs. ${widget.cartItem.totalPrice}',
+                    style: getSemiBoldTextStyle(size: 18)),
               ),
             ],
           ),
