@@ -1,5 +1,7 @@
+import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/resources/resources.dart';
@@ -20,32 +22,45 @@ class CartView extends StatelessWidget {
         elevation: 0,
         title: Text('My Cart', style: getSemiBoldTextStyle()),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // * Cart Items
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return CustomCartItem(cart.cartItems[index]);
-                },
-                separatorBuilder: (context, _) => const SizedBox(height: 20),
-                itemCount: cart.cartItems.length,
-              ),
+      body: cart.cartItems.isEmpty
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: double.infinity),
+                LottieBuilder.asset(AssetManager.emptyCart, width: 300),
+                const SizedBox(height: 20),
+                Text('Your cart is empty',
+                    style: getSemiBoldTextStyle(size: 20)),
+              ],
+            )
+          : Padding(
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // * Cart Items
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return CustomCartItem(cart.cartItems[index]);
+                      },
+                      separatorBuilder: (context, _) =>
+                          const SizedBox(height: 20),
+                      itemCount: cart.cartItems.length,
+                    ),
 
-              // * Promo Code
-              const SizedBox(height: 40),
-              const PromoCode(),
-              const SizedBox(height: 20),
-              // * Checkout
-              const Checkout(),
-            ],
-          ),
-        ),
-      ),
+                    // * Promo Code
+                    const SizedBox(height: 40),
+                    const PromoCode(),
+                    const SizedBox(height: 20),
+                    // * Checkout
+                    const Checkout(),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

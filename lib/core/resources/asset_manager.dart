@@ -19,4 +19,5 @@ class AssetManager {
   static const error = '$_jsonPath/error.json';
   static const success = '$_jsonPath/success.json';
   static const noInternet = '$_jsonPath/no-internet.json';
+  static const emptyCart = '$_jsonPath/empty-cart.json';
 }
