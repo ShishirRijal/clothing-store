@@ -12,24 +12,9 @@ class ProfileView extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(children: [
           // back button along with Profile as header at center
-          Stack(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Icon(Icons.arrow_back_ios, size: 24)),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'Profile',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ),
-            ],
+          Text(
+            'Profile',
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 20),
           Stack(
