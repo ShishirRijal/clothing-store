@@ -1,7 +1,6 @@
 import 'package:clothing_store/features/shop/data/models/product_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../shop/domain/entities/product.dart';
 part 'cart_item.g.dart';
 
 @JsonSerializable(explicitToJson: true)
