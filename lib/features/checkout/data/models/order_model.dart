@@ -1,5 +1,4 @@
 import 'package:clothing_store/features/cart/data/models/cart_item.dart';
-import 'package:clothing_store/features/cart/domain/entities/cart_item.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'order_model.g.dart';
