@@ -30,6 +30,22 @@ class Product {
     required this.quantity,
   });
 
+  // empty constructor
+  Product.empty()
+      : this(
+          id: '',
+          name: '',
+          brand: '',
+          description: '',
+          image: '',
+          price: 0.0,
+          reviewAndRating: ReviewAndRating.empty(),
+          categories: [],
+          availableColors: [],
+          availableSizes: [],
+          quantity: 0,
+        );
+
   // to json method
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 

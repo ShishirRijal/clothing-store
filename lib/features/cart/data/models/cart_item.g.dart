@@ -9,9 +9,7 @@ part of 'cart_item.dart';
 CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
     CartItemModel(
       id: json['id'] as String?,
-      product: json['product'] == null
-          ? null
-          : Product.fromJson(json['product'] as Map<String, dynamic>),
+      product: ProductModel.fromJson(json['product'] as Map<String, dynamic>),
       quantity: json['quantity'] as int?,
       totalPrice: (json['totalPrice'] as num?)?.toDouble(),
     );
@@ -19,7 +17,7 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'product': instance.product?.toJson(),
+      'product': instance.product.toJson(),
       'quantity': instance.quantity,
       'totalPrice': instance.totalPrice,
     };
