@@ -11,11 +11,14 @@ class Product {
   String description;
   String image;
   double price;
-  ReviewAndRating reviewAndRating;
+  List<ReviewAndRating> reviewsAndRatings;
   List<String> categories;
   List<String> availableSizes;
   List<String> availableColors; // hexvalue
+  int ratingCount;
+  int reviewCount;
   int quantity;
+  double averageRating;
   Product({
     this.id = '',
     required this.name,
@@ -23,11 +26,14 @@ class Product {
     required this.description,
     required this.image,
     required this.price,
-    required this.reviewAndRating,
+    required this.reviewsAndRatings,
     required this.categories,
     required this.availableColors,
     required this.availableSizes,
     required this.quantity,
+    required this.ratingCount,
+    required this.reviewCount,
+    required this.averageRating,
   });
 
   // empty constructor
@@ -39,11 +45,14 @@ class Product {
           description: '',
           image: '',
           price: 0.0,
-          reviewAndRating: ReviewAndRating.empty(),
+          reviewsAndRatings: [],
           categories: [],
           availableColors: [],
           availableSizes: [],
           quantity: 0,
+          reviewCount: 0,
+          ratingCount: 0,
+          averageRating: 0,
         );
 
   // to json method
@@ -55,22 +64,32 @@ class Product {
 }
 
 Product product = Product(
-    name: 'Red overcoat for women',
-    brand: 'Gucci',
-    description:
-        "loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum ",
-    image:
-        "https://dqp736wsu6w3m.cloudfront.net/s3bucket/og/feed/img/man_coat/636781/without_model_small.png",
-    price: 3456.99,
-    reviewAndRating: ReviewAndRating(
+  name: 'Red overcoat for women',
+  brand: 'Gucci',
+  description:
+      "loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum loreum ipsum ",
+  image:
+      "https://dqp736wsu6w3m.cloudfront.net/s3bucket/og/feed/img/man_coat/636781/without_model_small.png",
+  price: 3456.99,
+  reviewsAndRatings: [
+    ReviewAndRating(
       id: '948jd',
       rating: 4.5,
-      ratingCount: 34,
-      review: 'sdhfisdhis',
-      reviewCount: 34,
-      user: 'Shishir Rijal',
+      review: 'nice product. fully satisfied',
+      userId: 'ShishirRijal',
     ),
-    categories: ['coat', 'female'],
-    availableColors: ['red'],
-    availableSizes: ['XL', 'XXL', 'XXl'],
-    quantity: 23);
+    ReviewAndRating(
+      id: '948jd',
+      rating: 4.5,
+      review: 'loved it :) ',
+      userId: 'ShishirRijal',
+    ),
+  ],
+  categories: ['coat', 'female'],
+  availableColors: ['red'],
+  availableSizes: ['XL', 'XXL', 'XXl'],
+  quantity: 23,
+  ratingCount: 34,
+  reviewCount: 2,
+  averageRating: 4.5,
+);

@@ -13,8 +13,9 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       description: json['description'] as String,
       image: json['image'] as String,
       price: (json['price'] as num).toDouble(),
-      reviewAndRating: ReviewAndRating.fromJson(
-          json['reviewAndRating'] as Map<String, dynamic>),
+      reviewsAndRatings: (json['reviewsAndRatings'] as List<dynamic>)
+          .map((e) => ReviewAndRating.fromJson(e as Map<String, dynamic>))
+          .toList(),
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -25,6 +26,9 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
           .map((e) => e as String)
           .toList(),
       quantity: json['quantity'] as int,
+      ratingCount: json['ratingCount'] as int,
+      reviewCount: json['reviewCount'] as int,
+      averageRating: (json['averageRating'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
@@ -34,9 +38,13 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'description': instance.description,
       'image': instance.image,
       'price': instance.price,
-      'reviewAndRating': instance.reviewAndRating.toJson(),
+      'reviewsAndRatings':
+          instance.reviewsAndRatings.map((e) => e.toJson()).toList(),
       'categories': instance.categories,
       'availableSizes': instance.availableSizes,
       'availableColors': instance.availableColors,
+      'ratingCount': instance.ratingCount,
+      'reviewCount': instance.reviewCount,
       'quantity': instance.quantity,
+      'averageRating': instance.averageRating,
     };

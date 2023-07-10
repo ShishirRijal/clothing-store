@@ -11,11 +11,14 @@ class ProductModel {
   String? description;
   String? image;
   double? price;
-  ReviewAndRatingModel? reviewAndRating;
+  List<ReviewAndRatingModel>? reviewAndRating;
   List<String>? categories;
   List<String>? availableSizes;
   List<String>? availableColors; // hexvalue
+  int? ratingCount;
+  int? reviewCount;
   int? quantity;
+  double? averageRating;
 
   // constructor
   ProductModel({
@@ -30,6 +33,9 @@ class ProductModel {
     this.availableColors,
     this.availableSizes,
     this.quantity,
+    this.ratingCount,
+    this.reviewCount,
+    this.averageRating,
   });
 
   // from json

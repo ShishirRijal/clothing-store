@@ -4,19 +4,15 @@ part 'review_and_rating_model.g.dart';
 @JsonSerializable()
 class ReviewAndRatingModel {
   String? id;
-  String? user;
+  String? userId;
   String? review;
   double? rating;
-  int? reviewCount;
-  int? ratingCount;
 
   ReviewAndRatingModel({
     this.id,
-    this.user,
+    this.userId,
     this.review,
     this.rating,
-    this.reviewCount,
-    this.ratingCount,
   });
   // to json
   Map<String, dynamic> toJson() => _$ReviewAndRatingModelToJson(this);

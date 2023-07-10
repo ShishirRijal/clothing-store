@@ -156,7 +156,10 @@ class AddProductViewModel extends ChangeNotifier {
         availableSizes: selectedSizes,
         categories: selectedCategories,
         image: image!.path,
-        reviewAndRating: ReviewAndRating.empty(),
+        averageRating: 0,
+        ratingCount: 0,
+        reviewCount: 0,
+        reviewsAndRatings: [],
       );
       final addProductUseCase = getIt<AddProductUseCase>();
       return addProductUseCase(

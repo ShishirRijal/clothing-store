@@ -7,9 +7,7 @@ extension ReviewAndRatingMapper on ReviewAndRatingModel? {
       id: this?.id ?? '',
       rating: this?.rating ?? 0,
       review: this?.review ?? '',
-      reviewCount: this?.reviewCount ?? 0,
-      ratingCount: this?.ratingCount ?? 0,
-      user: this?.user ?? '',
+      userId: this?.userId ?? '',
     );
   }
 }

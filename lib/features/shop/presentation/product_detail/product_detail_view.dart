@@ -297,19 +297,19 @@ class RatingAndReview extends StatelessWidget {
         const Icon(Icons.star, color: Colors.amber, size: 24),
         const SizedBox(width: 5),
         Text(
-          product.reviewAndRating.rating.toStringAsFixed(1),
+          product.averageRating.toStringAsFixed(1),
           style: getBoldTextStyle(size: 18),
         ),
         const SizedBox(width: 5),
         Text(
-          "(${product.reviewAndRating.ratingCount})",
+          "(${product.ratingCount})",
           style: getRegularTextStyle(size: 18, color: ColorManager.grey),
         ),
         const SizedBox(width: 10),
         const Icon(Icons.circle, size: 7, color: ColorManager.grey),
         const SizedBox(width: 10),
         Text(
-          "(${product.reviewAndRating.reviewCount} Reviews)",
+          "(${product.reviewCount} Reviews)",
           style: getRegularTextStyle(size: 18, color: ColorManager.grey),
         ),
       ],
