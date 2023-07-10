@@ -5,8 +5,6 @@ import 'package:clothing_store/features/shop/presentation/main/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../features/admin_panel/presentation/main/admin_main.dart';
-
 class MyApp extends StatelessWidget {
   const MyApp._internal(); // private constructor
 

@@ -5,10 +5,10 @@ import '../../domain/entities/cart_item.dart';
 
 class Cart extends ChangeNotifier {
   final List<CartItem> _cartItems = [];
-  final double _deliveryCharge = 0;
+  final double _deliveryCharge = 150;
   int _totalItems = 0;
   double _totalPrice = 0;
-  final double _discount = 0;
+  final double _discount = 50;
 
   // * getter
   List<CartItem> get cartItems => _cartItems;

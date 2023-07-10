@@ -70,19 +70,21 @@ class Checkout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.read<Cart>();
+
     return Column(
       children: [
         // * Total
-        const _Price(title: 'Sub-total', price: 5000),
+        _Price(title: 'Sub-total', price: cart.productPrice),
         const SizedBox(height: 10),
-        const _Price(title: 'Discount', price: 1100),
+        _Price(title: 'Discount', price: cart.discount),
         const SizedBox(height: 10),
-        const _Price(title: 'Delivery', price: 220),
+        _Price(title: 'Delivery', price: cart.deliveryCharge),
         const SizedBox(height: 10),
         // dot dot line
         const Divider(thickness: 0.5, color: ColorManager.grey),
         const SizedBox(height: 10),
-        const _Price(title: 'Total', price: 3670),
+        _Price(title: 'Total', price: cart.totalPrice),
         const SizedBox(height: 20),
         // * Checkout
         CustomButton(
@@ -154,7 +156,7 @@ class _Price extends StatelessWidget {
         Text(title,
             style: getSemiBoldTextStyle(color: ColorManager.grey, size: 18)),
         const Spacer(),
-        Text("Rs. ${price.toStringAsFixed(0)}",
+        Text("Rs. ${price.toStringAsFixed(2)}",
             style: getSemiBoldTextStyle(size: 18)),
       ],
     );

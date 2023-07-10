@@ -65,6 +65,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 child: Image.network(
                   product.image,
                   fit: BoxFit.fill,
+                  colorBlendMode: BlendMode.darken,
                 ),
               ),
               const SizedBox(height: 20),
