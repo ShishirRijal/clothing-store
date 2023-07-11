@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: theme,
-        home: AdminMainView(),
+        home: MainView(),
         // home: Builder(builder: (context) {
         //   return StreamProvider(
         //     create: (_) => context.read<AuthServices>().authStateChanges,
