@@ -1,7 +1,10 @@
 import 'package:clothing_store/core/theme.dart';
+import 'package:clothing_store/features/admin_panel/presentation/presentation.dart';
 import 'package:clothing_store/features/authentication/data/services/auth_services.dart';
 import 'package:clothing_store/features/cart/presentation/providers/cart.dart';
+import 'package:clothing_store/features/shop/domain/entities/product.dart';
 import 'package:clothing_store/features/shop/presentation/main/main_view.dart';
+import 'package:clothing_store/features/shop/presentation/product_detail/product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +28,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: theme,
-        home: const MainView(),
+        home: AdminMainView(),
         // home: Builder(builder: (context) {
         //   return StreamProvider(
         //     create: (_) => context.read<AuthServices>().authStateChanges,
