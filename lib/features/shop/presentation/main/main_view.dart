@@ -5,10 +5,13 @@ import 'package:clothing_store/features/authentication/data/network/network_info
 import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../../../cart/cart.dart';
 import 'home/home_view.dart';
 import 'package:flutter/material.dart';
+
+import 'home/home_viewmodel.dart';
 
 class MainView extends StatefulWidget {
   const MainView({this.index = 0, super.key});
@@ -37,23 +40,30 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: FutureBuilder(
-              future: isConnected,
-              builder: (context, snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? const Center(
-                        child: CircularProgressIndicator(
-                        color: ColorManager.primary,
-                        strokeWidth: 3,
-                      ))
-                    : snapshot.data == false
-                        ? Center(
-                            child: LottieBuilder.asset(AssetManager.noInternet),
-                          )
-                        : pages[_selectedIndex];
-              }),
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<HomeViewModel>(
+                create: (_) => HomeViewModel()),
+          ],
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: FutureBuilder(
+                future: isConnected,
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          color: ColorManager.primary,
+                          strokeWidth: 3,
+                        ))
+                      : snapshot.data == false
+                          ? Center(
+                              child:
+                                  LottieBuilder.asset(AssetManager.noInternet),
+                            )
+                          : pages[_selectedIndex];
+                }),
+          ),
         ),
       ),
 

@@ -16,7 +16,13 @@ class ProductRepositoryImpl extends ProductRepository {
   });
 
   @override
-  Future<Either<Failure, List<Product>>> getProductByName(String name) async {
+  Future<Either<Failure, List<Product>>> getProductByName(String name) {
+    // TODO: implement getTrending
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<Product>>> getProducts() async {
     if (await networkInfo.isConnected) {
       try {
         // fetch product from firestore and return
@@ -39,12 +45,6 @@ class ProductRepositoryImpl extends ProductRepository {
         ResponseMessage.NO_INTERNET_CONNECTION,
       ));
     }
-  }
-
-  @override
-  Future<Either<Failure, List<Product>>> getProducts() {
-    // TODO: implement getProducts
-    throw UnimplementedError();
   }
 
   @override

@@ -15,8 +15,6 @@ class ProductDetailView extends StatefulWidget {
 }
 
 class _ProductDetailViewState extends State<ProductDetailView> {
-  final clothSize = ['S', 'M', 'L', 'XL', 'XXL'];
-  final colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow];
   final controller = PageController();
   int selectedSizeIndex = 0;
   int selectedColorIndex = 0;
@@ -63,7 +61,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  product.image,
+                  widget.product.image,
                   fit: BoxFit.fill,
                   colorBlendMode: BlendMode.darken,
                 ),
@@ -71,17 +69,17 @@ class _ProductDetailViewState extends State<ProductDetailView> {
               const SizedBox(height: 20),
               //* Product Name
               Text(
-                product.name,
+                widget.product.name,
                 style: getSemiBoldTextStyle(size: 22),
               ),
 
               const SizedBox(height: 10),
               // Ratings and reviews
-              RatingAndReview(product),
+              RatingAndReview(widget.product),
               const SizedBox(height: 20),
               // * Description
               ReadMoreText(
-                product.description,
+                widget.product.description,
                 trimLength: 160,
                 trimExpandedText: ' Read less',
                 trimCollapsedText: 'Read more',
@@ -101,10 +99,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 15),
                       scrollDirection: Axis.horizontal,
-                      itemCount: colors.length,
+                      itemCount: widget.product.availableColors.length,
                       itemBuilder: (context, index) {
                         return ColorButton(
-                          color: colors[index],
+                          color: Color(widget.product.availableColors[index]),
                           isSelected: selectedColorIndex == index,
                           onPressed: () {
                             setState(() {
@@ -143,9 +141,9 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       separatorBuilder: (context, index) =>
                           const SizedBox(width: 15),
                       scrollDirection: Axis.horizontal,
-                      itemCount: product.availableSizes.length,
+                      itemCount: widget.product.availableSizes.length,
                       itemBuilder: (context, index) {
-                        return SizeButton(product.availableSizes[index],
+                        return SizeButton(widget.product.availableSizes[index],
                             isSelected: index == selectedSizeIndex,
                             onPressed: () {
                           setState(() {
@@ -206,8 +204,7 @@ class AddToCart extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text:
-                      "Rs. ${(product.price + (product.price * 0.25)).toStringAsFixed(2)}\n",
+                  text: "Rs. ${(product.price * 1.12).toStringAsFixed(2)}\n",
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         decoration: TextDecoration.lineThrough,
                         color: ColorManager.grey,

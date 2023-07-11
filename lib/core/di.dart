@@ -11,6 +11,10 @@ import '../features/authentication/data/data.dart';
 import '../features/authentication/data/network/network_info.dart';
 import '../features/authentication/domain/domain.dart';
 import '../features/authentication/domain/usecases/usecases.dart';
+import '../features/shop/data/repositories_impl/product_repository_impl.dart'
+    as shop;
+import '../features/shop/domain/repositories/product_repository.dart' as shop;
+import '../features/shop/domain/usecases/get_all_products.dart';
 
 final getIt = GetIt.instance;
 
@@ -50,4 +54,12 @@ Future<void> setup() async {
   // add product usecase
   getIt.registerLazySingleton<AddProductUseCase>(
       () => AddProductUseCase(repository: getIt()));
+
+  //* Shop
+  // product repository
+  getIt.registerLazySingleton<shop.ProductRepository>(() =>
+      shop.ProductRepositoryImpl(networkInfo: getIt(), firestore: getIt()));
+  // get all products usecase
+  getIt.registerLazySingleton<GetAllProductsUseCase>(
+      () => GetAllProductsUseCase(repository: getIt()));
 }

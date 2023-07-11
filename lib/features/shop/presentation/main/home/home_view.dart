@@ -1,8 +1,15 @@
+import 'dart:ffi';
+
+import 'package:clothing_store/core/base_usecase.dart';
+import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/resources.dart';
-import 'package:clothing_store/features/shop/domain/entities/product.dart';
+import 'package:clothing_store/features/shop/domain/usecases/get_all_products.dart';
 import 'package:clothing_store/features/shop/presentation/product_detail/product_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
+import 'package:provider/provider.dart';
+
+import 'home_viewmodel.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -13,24 +20,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final controller = InfiniteScrollController();
-  final _images = [
-    'https://centralmallonline.in/wp-content/uploads/2022/12/banner3-scaled.jpg',
-    'https://cdn.flipshope.com/blog/wp-content/uploads/2021/10/Meesho-sale.png',
-    'https://www.informalnewz.com/wp-content/uploads/2022/11/Meesho-launches.jpg',
-    'https://www.voiceofentrepreneur.com/wp-content/uploads/2021/10/244399434_1578769505814795_237892040837641265_n.png',
-  ];
-  final _categories = [
-    'All',
-    'T-Shirt',
-    'Shirt',
-    'Jeans',
-    'Shoes',
-    'T-Shirt',
-    'Shirt',
-    'Jeans',
-    'Shoes',
-  ];
-  int _selectedCategoryIndex = 0;
+
   @override
   void dispose() {
     controller.dispose();
@@ -39,6 +29,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<HomeViewModel>();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -46,7 +37,7 @@ class _HomeViewState extends State<HomeView> {
           const SearchBar(),
           const SizedBox(height: 30),
           // * Carousel Slider for Offers
-          Offers(controller: controller, images: _images),
+          Offers(controller: controller, images: viewModel.images),
           const SizedBox(height: 30),
           //* Trending Products
           _Header(title: "Trending", onTap: () {}),
@@ -55,12 +46,6 @@ class _HomeViewState extends State<HomeView> {
           const SizedBox(height: 250, child: TrendingProducts()),
           const SizedBox(height: 30),
 
-          //* On Sale
-          _Header(title: "Heavy Discount", onTap: () {}),
-          const SizedBox(height: 20),
-
-          const SizedBox(height: 250, child: HeavyDiscountedProducts()),
-          const SizedBox(height: 30),
           //* Categories
           _Header(title: 'Categories', onTap: () {}),
           const SizedBox(height: 20),
@@ -74,22 +59,23 @@ class _HomeViewState extends State<HomeView> {
   }
 
   SizedBox _categoriesChips() {
+    final viewModel = context.watch<HomeViewModel>();
     return SizedBox(
       height: 60,
       child: ListView.separated(
         separatorBuilder: (context, _) => const SizedBox(width: 10),
         itemBuilder: (context, index) {
           return CustomCategoryChip(
-            _categories[index],
-            isSelected: _selectedCategoryIndex == index,
+            viewModel.categories[index],
+            isSelected: viewModel.selectedCategoryIndex == index,
             onTap: () {
               setState(() {
-                _selectedCategoryIndex = index;
+                viewModel.updateSelectedCategory(index);
               });
             },
           );
         },
-        itemCount: _categories.length,
+        itemCount: viewModel.categories.length,
         scrollDirection: Axis.horizontal,
       ),
     );
@@ -123,139 +109,175 @@ class _Header extends StatelessWidget {
   }
 }
 
-class HeavyDiscountedProducts extends StatelessWidget {
-  const HeavyDiscountedProducts({super.key});
+// class HeavyDiscountedProducts extends StatelessWidget {
+//   const HeavyDiscountedProducts({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (context, _) => const SizedBox(width: 20),
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: () {
-          // to to product detail screen
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductDetailView(product)));
-        },
-        child: Container(
-          // height: 150,
-          width: 200,
-          alignment: Alignment.bottomCenter,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
-            // decoration image
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              colorFilter: ColorFilter.mode(
-                  ColorManager.black.withOpacity(0.3), BlendMode.darken),
-              image: const NetworkImage(
-                  'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg'),
-            ),
-          ),
-          child: Container(
-            // height: 50,
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.separated(
+//       scrollDirection: Axis.horizontal,
+//       separatorBuilder: (context, _) => const SizedBox(width: 20),
+//       itemBuilder: (context, index) => GestureDetector(
+//         onTap: () {
+//           // to to product detail screen
+//           Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (context) => ProductDetailView(product)));
+//         },
+//         child: Container(
+//           // height: 150,
+//           width: 200,
+//           alignment: Alignment.bottomCenter,
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(15),
+//             color: Colors.white,
+//             // decoration image
+//             image: DecorationImage(
+//               fit: BoxFit.fill,
+//               colorFilter: ColorFilter.mode(
+//                   ColorManager.black.withOpacity(0.3), BlendMode.darken),
+//               image: const NetworkImage(
+//                   'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg'),
+//             ),
+//           ),
+//           child: Container(
+//             // height: 50,
 
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: const BoxDecoration(
-              color: ColorManager.primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Blue Kurthi",
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: getSemiBoldTextStyle(
-                    size: 18,
-                    color: ColorManager.white,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                const PriceText(
-                  2598.99,
-                  priceWithoutDiscount: 3200.99,
-                  color: ColorManager.white,
-                ),
-                // const SizedBox(height: 10),
-              ],
-            ),
-          ),
-        ),
-      ),
-      itemCount: 10,
-      shrinkWrap: true,
-    );
-  }
-}
+//             width: double.infinity,
+//             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+//             decoration: const BoxDecoration(
+//               color: ColorManager.primary,
+//               borderRadius: BorderRadius.only(
+//                 bottomLeft: Radius.circular(15),
+//                 bottomRight: Radius.circular(15),
+//               ),
+//             ),
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: [
+//                 Text(
+//                   "Blue Kurthi",
+//                   maxLines: 1,
+//                   overflow: TextOverflow.ellipsis,
+//                   style: getSemiBoldTextStyle(
+//                     size: 18,
+//                     color: ColorManager.white,
+//                   ),
+//                 ),
+//                 const SizedBox(height: 5),
+//                 const PriceText(
+//                   2598.99,
+//                   priceWithoutDiscount: 3200.99,
+//                   color: ColorManager.white,
+//                 ),
+//                 // const SizedBox(height: 10),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//       itemCount: 10,
+//       shrinkWrap: true,
+//     );
+//   }
+// }
 
 class TrendingProducts extends StatelessWidget {
   const TrendingProducts({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (context, _) => const SizedBox(width: 20),
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: () {
-          // to to product detail screen
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProductDetailView(product)));
-        },
-        child: Container(
-          alignment: Alignment.bottomCenter,
-          // height: 150,
-          width: 200,
+    return FutureBuilder(
+        future: context.read<HomeViewModel>().getAllProducts(const NoParams()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorManager.primary,
+                strokeWidth: 3,
+              ),
+            );
+          }
+          final result = snapshot.data;
 
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: Colors.white,
-            // decoration image
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              colorFilter: ColorFilter.mode(
-                  ColorManager.black.withOpacity(0.3), BlendMode.darken),
-              image: const NetworkImage(
-                  'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg'),
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: const BoxDecoration(
-              color: ColorManager.primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15),
-              ),
-            ),
-            child: Text(
-              "Blue Kurthi with long sleeves",
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: getSemiBoldTextStyle(
-                size: 18,
-                color: ColorManager.white,
-              ),
-            ),
-          ),
-        ),
-      ),
-      itemCount: 10,
-      shrinkWrap: true,
-    );
+          if (result == null) {
+            return const Center(child: Text("No Products Found"));
+          }
+
+          // so there is something
+          return result.fold(
+            (error) => Center(child: Text(error.message)),
+            (products) => products.isEmpty
+                ? const Center(child: Text("No Products Found"))
+                : Align(
+                    alignment: Alignment.centerLeft,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, _) =>
+                          const SizedBox(width: 20),
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return GestureDetector(
+                          onTap: () {
+                            // to to product detail screen
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailView(product)));
+                          },
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            // height: 150,
+                            width: 200,
+
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                              // decoration image
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                colorFilter: ColorFilter.mode(
+                                    ColorManager.black.withOpacity(0.3),
+                                    BlendMode.darken),
+                                image: NetworkImage(products[index].image),
+                              ),
+                            ),
+                            child: Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              decoration: const BoxDecoration(
+                                color: ColorManager.primary,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(15),
+                                  bottomRight: Radius.circular(15),
+                                ),
+                              ),
+                              child: Text(
+                                products[index].name,
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: getSemiBoldTextStyle(
+                                  size: 18,
+                                  color: ColorManager.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                    ),
+                  ),
+          );
+
+          // return const Center(child: Text("No Products Found"));
+        });
   }
 }
 
@@ -266,50 +288,88 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.65,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-      ),
-      itemBuilder: (context, index) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                // to to product detail screen
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProductDetailView(product)));
-              },
-              // child: SizedBox(height: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  'https://shaposh.pk/34438-large_default/formal-2187-af-nt.jpg',
-                  fit: BoxFit.cover,
-                ),
+    final viewModel = context.watch<HomeViewModel>();
+    return FutureBuilder(
+        future: context.read<HomeViewModel>().getAllProducts(const NoParams()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: ColorManager.primary,
+                strokeWidth: 3,
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Blue Kurthi",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: getSemiBoldTextStyle(size: 18),
-            ),
-            const PriceText(2598.99, priceWithoutDiscount: 3200.99)
-          ],
-        );
-      },
-      itemCount: 10,
-    );
+            );
+          }
+          final result = snapshot.data;
+
+          if (result == null) {
+            return const Center(child: Text("No Products Found"));
+          }
+
+          // so there is something
+          return result.fold((error) => Center(child: Text(error.message)),
+              (products) {
+            viewModel.categories[viewModel.selectedCategoryIndex] == 'All'
+                ? null
+                : products = products
+                    .where((product) => product.categories.contains(
+                        viewModel.categories[viewModel.selectedCategoryIndex]))
+                    .toList();
+            return products.isEmpty
+                ? const Center(child: Text("No Products Found"))
+                : Align(
+                    alignment: Alignment.centerLeft,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.65,
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 20,
+                      ),
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                // to to product detail screen
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductDetailView(product)));
+                              },
+                              // child: SizedBox(height: 10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  product.image,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              product.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: getSemiBoldTextStyle(size: 18),
+                            ),
+                            PriceText(product.price,
+                                priceWithoutDiscount: product.price * 1.12)
+                          ],
+                        );
+                      },
+                      itemCount: products.length,
+                    ),
+                  );
+          });
+        });
   }
 }
 
