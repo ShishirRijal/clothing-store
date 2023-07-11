@@ -14,7 +14,7 @@ class ProductModel {
   List<ReviewAndRatingModel>? reviewAndRating;
   List<String>? categories;
   List<String>? availableSizes;
-  List<String>? availableColors; // hexvalue
+  List<int>? availableColors; // hexvalue
   int? ratingCount;
   int? reviewCount;
   int? quantity;

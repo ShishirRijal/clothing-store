@@ -20,7 +20,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
           .map((e) => e as String)
           .toList(),
       availableColors: (json['availableColors'] as List<dynamic>)
-          .map((e) => e as String)
+          .map((e) => e as int)
           .toList(),
       availableSizes: (json['availableSizes'] as List<dynamic>)
           .map((e) => e as String)

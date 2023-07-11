@@ -138,11 +138,11 @@ class _AddProductViewState extends State<AddProductView> {
                             ),
                         itemBuilder: (context, index) {
                           return _ColorBox(
-                            viewModel.colors[index],
+                            viewModel.colors[index].value,
                             isSelected: viewModel
                                 .isSelectedColor(viewModel.colors[index]),
-                            onPressed: () => viewModel
-                                .toggleSelectedColor(viewModel.colors[index]),
+                            onPressed: () => viewModel.toggleSelectedColor(
+                                viewModel.colors[index].value),
                           );
                         })),
 
@@ -216,7 +216,8 @@ class _AddProductViewState extends State<AddProductView> {
                   onPressed: () async {
                     // * validate the inputs
                     showDialog(
-                        context: context, builder: (context) => LoadingPopup());
+                        context: context,
+                        builder: (context) => const LoadingPopup());
                     (await viewModel.addProduct(context)).fold((l) {
                       Navigator.of(context).popUntil((route) => route.isFirst);
                       if (l.code != 1000) {
@@ -285,11 +286,11 @@ class CategoryButton extends StatelessWidget {
 
 class _ColorBox extends StatelessWidget {
   const _ColorBox(
-    this.color, {
+    this.colorValue, {
     this.isSelected = false,
     this.onPressed,
   });
-  final Color color;
+  final int colorValue;
 
   final bool isSelected;
   final VoidCallback? onPressed;
@@ -301,13 +302,28 @@ class _ColorBox extends StatelessWidget {
       child: Container(
         height: 50,
         width: 50,
+
         decoration: BoxDecoration(
-          color: color,
+          color: Color(colorValue),
           borderRadius: BorderRadius.circular(100),
+          //shadow
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         // show tick sign if selected
         child: isSelected
-            ? const Icon(Icons.check, color: ColorManager.white)
+            ? Icon(
+                Icons.check,
+                color: colorValue == Colors.white.value
+                    ? ColorManager.primary
+                    : ColorManager.white,
+              )
             : const SizedBox.shrink(),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/features/admin_panel/domain/domain.dart';
 import 'package:clothing_store/features/shop/domain/entities/product.dart';
-import 'package:clothing_store/features/shop/domain/entities/review_and_rating.dart';
 import 'package:clothing_store/utils/utils.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,13 @@ class AddProductViewModel extends ChangeNotifier {
     Colors.orange,
     Colors.pink,
     Colors.brown,
-    Colors.red,
-    Colors.blue,
+    Colors.grey,
+    Colors.black,
+    Colors.white,
+    Colors.cyan,
+    Colors.teal,
+    Colors.indigo,
+    Colors.lime,
   ];
   final _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
   final _categories = [
@@ -53,7 +57,7 @@ class AddProductViewModel extends ChangeNotifier {
     'Belts',
   ];
   List<String> selectedSizes = [];
-  List<Color> selectedColors = [];
+  List<int> selectedColors = [];
   List<String> selectedCategories = [];
   XFile? image;
   bool isLoading = false;
@@ -62,11 +66,11 @@ class AddProductViewModel extends ChangeNotifier {
   bool isSelectedColor(Color color) => selectedColors.contains(color);
   bool isSelectedSize(String size) => selectedSizes.contains(size);
   // toggle selected color
-  void toggleSelectedColor(Color color) {
-    if (selectedColors.contains(color)) {
-      selectedColors.remove(color);
+  void toggleSelectedColor(int colorValue) {
+    if (selectedColors.contains(colorValue)) {
+      selectedColors.remove(colorValue);
     } else {
-      selectedColors.add(color);
+      selectedColors.add(colorValue);
     }
     notifyListeners();
   }
@@ -145,14 +149,13 @@ class AddProductViewModel extends ChangeNotifier {
           const Left(Failure(1000, 'Product details not added properly.')));
     } else {
       final product = Product(
-        id: 'id',
+        id: DateTime.now().toIso8601String(),
         name: productNameController.text,
         price: double.tryParse(productPriceController.text) ?? 0,
         description: productDescriptionController.text,
         quantity: int.tryParse(productQuantityController.text) ?? 0,
         brand: productBrandController.text,
-        availableColors:
-            selectedColors.map((color) => color.value.toString()).toList(),
+        availableColors: selectedColors,
         availableSizes: selectedSizes,
         categories: selectedCategories,
         image: image!.path,

@@ -1,3 +1,4 @@
+import 'package:clothing_store/core/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../../../shop/domain/entities/product.dart';
@@ -28,7 +29,8 @@ class Cart extends ChangeNotifier {
         quantity: 1,
         totalPrice: product.price,
         size: product.availableSizes,
-        color: product.availableColors,
+        color:
+            product.availableColors.map((color) => color.valueColor).toList(),
       );
       _cartItems.add(cartItem);
     } else {

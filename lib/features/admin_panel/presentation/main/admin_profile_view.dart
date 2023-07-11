@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';

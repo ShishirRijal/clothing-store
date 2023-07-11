@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'review_and_rating.dart';
@@ -14,7 +15,7 @@ class Product {
   List<ReviewAndRating> reviewsAndRatings;
   List<String> categories;
   List<String> availableSizes;
-  List<String> availableColors; // hexvalue
+  List<int> availableColors; // hexvalue
   int ratingCount;
   int reviewCount;
   int quantity;
@@ -86,7 +87,7 @@ Product product = Product(
     ),
   ],
   categories: ['coat', 'female'],
-  availableColors: ['red'],
+  availableColors: [Colors.red.value, Colors.blue.value],
   availableSizes: ['XL', 'XXL', 'XXl'],
   quantity: 23,
   ratingCount: 34,
