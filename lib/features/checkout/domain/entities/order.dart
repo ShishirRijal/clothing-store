@@ -1,5 +1,9 @@
-import '../../../cart/domain/entities/cart_item.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import '../../../cart/domain/entities/cart_item.dart';
+part 'order.g.dart';
+
+@JsonSerializable()
 class Order {
   String id;
   String userId;
@@ -18,4 +22,9 @@ class Order {
     required this.deliveryAddress,
     this.isDelivered = false,
   });
+
+// to json
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+  // from json
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 }
