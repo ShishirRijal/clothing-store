@@ -4,6 +4,7 @@ import 'package:clothing_store/core/resources/resources.dart';
 import 'package:clothing_store/features/authentication/data/network/network_info.dart';
 import 'package:clothing_store/features/cart/presentation/cart/cart_viewmodel.dart';
 import 'package:clothing_store/features/checkout/presentation/checkout/checkout_viewmodel.dart';
+import 'package:clothing_store/features/checkout/presentation/orders/orders_view.dart';
 import 'package:clothing_store/features/shop/shop.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _MainViewState extends State<MainView> {
   List<Widget> pages = const [
     HomeView(),
     CartView(),
-    OrdersView(),
+    OrderView(),
     ProfileView(),
   ];
   late Future<bool> isConnected;

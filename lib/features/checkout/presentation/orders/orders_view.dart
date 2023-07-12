@@ -97,6 +97,23 @@ class CheckoutItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListTile(
+      tileColor: ColorManager.lightGrey,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      title: Text(
+        order.dateTime.toString(),
+        style: getRegularTextStyle(),
+      ),
+      subtitle: Text(
+        "Rs.${order.totalAmount}",
+        style: getSemiBoldTextStyle(size: 18),
+      ),
+      trailing: Text(
+        order.isDelivered ? 'Delivered' : 'Pending',
+        style: getSemiBoldTextStyle(size: 18),
+      ),
+    );
   }
 }
