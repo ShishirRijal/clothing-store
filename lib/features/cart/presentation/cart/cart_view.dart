@@ -32,8 +32,8 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    final cart = context.watch<Cart>();
-
+    // final cart = context.watch<Cart>();
+    // final viewModel = context.watch<CartViewModel>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -65,6 +65,7 @@ class _CartViewState extends State<CartView> {
               for (var i in r) {
                 total += i.totalPrice;
               }
+
               context.read<Cart>().subTotal = total;
               return (r).isEmpty
                   ? Column(
@@ -98,7 +99,7 @@ class _CartViewState extends State<CartView> {
                           const PromoCode(),
                           const SizedBox(height: 20),
                           // * Checkout
-                          const Checkout(),
+                          Checkout(r),
                         ],
                       ),
                     );
@@ -109,8 +110,8 @@ class _CartViewState extends State<CartView> {
 }
 
 class Checkout extends StatelessWidget {
-  const Checkout({super.key});
-
+  const Checkout(this.cartItems, {super.key});
+  final List<CartItem> cartItems;
   @override
   Widget build(BuildContext context) {
     final cart = context.read<Cart>();
@@ -138,7 +139,7 @@ class Checkout extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => Provider(
                         create: (_) => CheckoutViewModel(),
-                        child: const CheckoutView())));
+                        child: CheckoutView(cartItems))));
           },
         ),
       ],

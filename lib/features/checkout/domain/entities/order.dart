@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../../cart/domain/entities/cart_item.dart';
 part 'order.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Order {
   String id;
   String userId;

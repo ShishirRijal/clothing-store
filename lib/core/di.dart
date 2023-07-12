@@ -5,6 +5,7 @@ import 'package:clothing_store/features/authentication/domain/usecases/logout_us
 import 'package:clothing_store/features/cart/domain/usecases/add_cart_item.dart';
 import 'package:clothing_store/features/cart/domain/usecases/delete_cart_item.dart';
 import 'package:clothing_store/features/cart/domain/usecases/get_cart_items.dart';
+import 'package:clothing_store/features/checkout/domain/usecases/get_all_orders_usecase.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +17,9 @@ import '../features/authentication/domain/domain.dart';
 import '../features/authentication/domain/usecases/usecases.dart';
 import '../features/cart/data/repositories_impl/cart_repository_impl.dart';
 import '../features/cart/domain/repositories/cart_repository.dart';
+import '../features/checkout/data/repositories_impl/checkout_repository_impl.dart';
+import '../features/checkout/domain/repositories/checkout_repository.dart';
+import '../features/checkout/domain/usecases/add_order_usecase.dart';
 import '../features/shop/data/repositories_impl/product_repository_impl.dart'
     as shop;
 import '../features/shop/domain/repositories/product_repository.dart' as shop;
@@ -81,4 +85,14 @@ Future<void> setup() async {
   // remove cart item usecase
   getIt.registerLazySingleton<DeleteCartItemUseCase>(
       () => DeleteCartItemUseCase(getIt()));
+
+  //* Checkout
+  // checkout repository
+  getIt.registerLazySingleton<CheckoutRepository>(
+      () => CheckoutRepositoryImpl(networkInfo: getIt(), firestore: getIt()));
+  // get all orders usecase
+  getIt.registerLazySingleton<GetAllOrdersUseCase>(
+      () => GetAllOrdersUseCase(getIt()));
+  // add an order usecase
+  getIt.registerLazySingleton<AddOrderUseCase>(() => AddOrderUseCase(getIt()));
 }

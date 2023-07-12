@@ -1,21 +1,22 @@
 import 'package:clothing_store/features/authentication/presentation/shared_widgets/shared_widgets.dart';
 import 'package:clothing_store/features/cart/domain/entities/cart_item.dart';
+import 'package:clothing_store/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/resources/resources.dart';
 import '../../../cart/presentation/providers/cart.dart';
+import '../../../shop/presentation/main/main_view.dart';
 import 'checkout_viewmodel.dart';
 
 class CheckoutView extends StatefulWidget {
-  const CheckoutView({super.key});
-
+  const CheckoutView(this.cartItems, {super.key});
+  final List<CartItem> cartItems;
   @override
   State<CheckoutView> createState() => _CheckoutViewState();
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  int paymentMethodIndex = 0;
   @override
   Widget build(BuildContext context) {
     final cart = context.read<Cart>();
@@ -45,45 +46,37 @@ class _CheckoutViewState extends State<CheckoutView> {
               Text('Payment Method', style: getSemiBoldTextStyle()),
               const SizedBox(height: 20),
               // payment method widget
-              PaymentMethod(
-                title: 'Apple Pay',
-                cardNumber: '4323',
-                isSelected: paymentMethodIndex == 0,
-                icon: Icons.apple,
-                onPressed: () {
-                  setState(() {
-                    paymentMethodIndex = 0;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              PaymentMethod(
-                title: 'Master Card',
-                cardNumber: '7484',
-                icon: Icons.credit_card,
-                isSelected: paymentMethodIndex == 1,
-                onPressed: () {
-                  setState(() {
-                    paymentMethodIndex = 1;
-                  });
-                },
-              ),
+              for (var paymentGateway in checkout.paymentGateways) ...[
+                PaymentMethod(
+                  title: paymentGateway.name,
+                  cardNumber: paymentGateway.number.toString(),
+                  icon: paymentGateway.icon,
+                  isSelected: checkout.selectedPaymentMethod ==
+                      paymentGateway, // if selected
+                  onPressed: () {
+                    setState(() {
+                      checkout.selectedPaymentMethod = paymentGateway;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20)
+              ],
 
               // * My Cart
               const SizedBox(height: 30),
-              Text('My Cart', style: getSemiBoldTextStyle()),
-              const SizedBox(height: 20),
+              // Text('My Cart', style: getSemiBoldTextStyle()),
+              // const SizedBox(height: 20),
               // list view builder of checkout cart item
-              SizedBox(
-                height: 90,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: cart.cartItems.length,
-                    itemBuilder: (context, index) {
-                      return _CheckoutCartItem(cart.cartItems[index]);
-                    }),
-              ),
+              // SizedBox(
+              //   height: 90,
+              //   child: ListView.builder(
+              //       scrollDirection: Axis.horizontal,
+              //       shrinkWrap: true,
+              //       itemCount: cart.cartItems.length,
+              //       itemBuilder: (context, index) {
+              //         return _CheckoutCartItem(cart.cartItems[index]);
+              //       }),
+              // ),
               // total
               const SizedBox(height: 40),
               Row(
@@ -98,8 +91,28 @@ class _CheckoutViewState extends State<CheckoutView> {
               // pay now
               CustomButton(
                 title: 'Pay Now',
-                onPressed: () {
-                  checkout.validate(context);
+                onPressed: () async {
+                  if (checkout.validate(context)) {
+                    (await checkout.addOrder(widget.cartItems)).fold(
+                        (l) => ScaffoldMessenger.of(context).showSnackBar(
+                            getErrorSnackbar(
+                                'An error occurred. ${l.message}', context)),
+                        (r) => {
+                              getSuccessFlushbar('Order placed!', context),
+                              // clear cart
+                              cart.clearCart(),
+                              Future.delayed(const Duration(milliseconds: 500),
+                                  () {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const MainView()),
+                                    (route) => true);
+                              })
+                            }
+                        // navigate to main view
+                        );
+                  }
                 },
               )
             ],
@@ -218,6 +231,7 @@ class DeliveryAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final checkout = context.read<CheckoutViewModel>();
     return Row(
       children: [
         Container(
@@ -234,10 +248,11 @@ class DeliveryAddress extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('123 Oakridge From Lane',
+            Text(checkout.deliveryAddress.address,
                 maxLines: 2, style: getSemiBoldTextStyle()),
             const SizedBox(height: 5),
-            Text('New York, NY', style: getRegularTextStyle().copyWith()),
+            Text(checkout.deliveryAddress.city,
+                style: getRegularTextStyle().copyWith()),
           ],
         ),
       ],

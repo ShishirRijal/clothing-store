@@ -3,6 +3,7 @@ import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
 import 'package:clothing_store/features/authentication/data/network/network_info.dart';
 import 'package:clothing_store/features/cart/presentation/cart/cart_viewmodel.dart';
+import 'package:clothing_store/features/checkout/presentation/checkout/checkout_viewmodel.dart';
 import 'package:clothing_store/features/shop/shop.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,8 @@ class _MainViewState extends State<MainView> {
                 create: (_) => HomeViewModel()),
             ChangeNotifierProvider<CartViewModel>(
                 create: (_) => CartViewModel()),
+            ChangeNotifierProvider<CheckoutViewModel>(
+                create: (_) => CheckoutViewModel()),
           ],
           child: Padding(
             padding: const EdgeInsets.all(20),

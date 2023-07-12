@@ -19,7 +19,9 @@ class CheckoutRepositoryImpl extends CheckoutRepository {
     if (await networkInfo.isConnected) {
       try {
         // add order to firestore
+
         await firestore.collection('orders').add(order.toJson());
+
         return const Right(null);
       } catch (e) {
         return const Left(Failure(

@@ -12,6 +12,8 @@ import '../providers/cart.dart';
 
 class CartViewModel extends ChangeNotifier {
   //
+  Order? order;
+
   Future<Either<Failure, List<CartItem>>> fetchCartItems(
       BuildContext context) async {
     final usecase = getIt<GetCartItemsUseCase>();
