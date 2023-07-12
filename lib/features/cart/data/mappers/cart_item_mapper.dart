@@ -12,8 +12,7 @@ extension CartItemMapper on CartItemModel? {
       product: this?.product.toEntity() ?? Product.empty(),
       quantity: this?.quantity ?? 0,
       totalPrice: this?.totalPrice ?? 0.0,
-      size: this?.size ?? [],
-      color: this?.color ?? [],
+      sizes: this?.sizes ?? [],
     );
   }
 }

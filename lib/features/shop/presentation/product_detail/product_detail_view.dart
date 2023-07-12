@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 
+import '../../../authentication/data/failure/failure.dart';
+import '../../../cart/domain/entities/cart_item.dart';
+
 class ProductDetailView extends StatefulWidget {
   const ProductDetailView(this.product, {super.key});
   final Product product;
@@ -18,6 +21,7 @@ class _ProductDetailViewState extends State<ProductDetailView> {
   final controller = PageController();
   int selectedSizeIndex = 0;
   int selectedColorIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -86,31 +90,31 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                 trimMode: TrimMode.Length,
                 style: getRegularTextStyle(size: 18, color: ColorManager.grey),
               ),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
 
-              Text(
-                "Select Color",
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 15),
-              SizedBox(
-                  height: 50,
-                  child: ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(width: 15),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.product.availableColors.length,
-                      itemBuilder: (context, index) {
-                        return ColorButton(
-                          color: Color(widget.product.availableColors[index]),
-                          isSelected: selectedColorIndex == index,
-                          onPressed: () {
-                            setState(() {
-                              selectedColorIndex = index;
-                            });
-                          },
-                        );
-                      })),
+              // Text(
+              //   "Select Color",
+              //   style: Theme.of(context).textTheme.headlineSmall,
+              // ),
+              // const SizedBox(height: 15),
+              // SizedBox(
+              //     height: 50,
+              //     child: ListView.separated(
+              //         separatorBuilder: (context, index) =>
+              //             const SizedBox(width: 15),
+              //         scrollDirection: Axis.horizontal,
+              //         itemCount: widget.product.availableColors.length,
+              //         itemBuilder: (context, index) {
+              //           return ColorButton(
+              //             color: Color(widget.product.availableColors[index]),
+              //             isSelected: selectedColorIndex == index,
+              //             onPressed: () {
+              //               setState(() {
+              //                 selectedColorIndex = index;
+              //               });
+              //             },
+              //           );
+              //         })),
 
               const SizedBox(height: 20),
 
@@ -153,7 +157,10 @@ class _ProductDetailViewState extends State<ProductDetailView> {
                       })),
 
               const SizedBox(height: 30),
-              AddToCart(widget.product),
+              AddToCart(
+                widget.product,
+                size: widget.product.availableSizes[selectedSizeIndex],
+              ),
             ]),
           ),
         ),
@@ -180,10 +187,23 @@ class ColorButton extends StatelessWidget {
       child: Container(
           height: 40,
           width: 40,
-          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              // shadow
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                )
+              ]),
           child: !isSelected
               ? null
-              : const Icon(Icons.check, color: Colors.white)),
+              : Icon(Icons.check,
+                  color: color == Colors.white
+                      ? ColorManager.primary
+                      : Colors.white)),
     );
   }
 }
@@ -191,9 +211,11 @@ class ColorButton extends StatelessWidget {
 class AddToCart extends StatelessWidget {
   const AddToCart(
     this.product, {
+    required this.size,
     super.key,
   });
   final Product product;
+  final String size;
 
   @override
   Widget build(BuildContext context) {
@@ -226,9 +248,16 @@ class AddToCart extends StatelessWidget {
           child: CustomButton(
             title: 'Add to cart',
             width: 50,
-            onPressed: () {
-              context.read<Cart>().addCartItem(product);
-              getSuccessFlushbar('Added to cart', context);
+            onPressed: () async {
+              (await context.read<Cart>().addCartItem(product, size)).fold(
+                (failure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      getErrorSnackbar("Add to cart unsuccessful!", context));
+                },
+                (r) {
+                  getSuccessFlushbar('Added to cart', context);
+                },
+              );
             },
           ),
         ),

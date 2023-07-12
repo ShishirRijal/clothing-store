@@ -1,6 +1,10 @@
 import 'package:clothing_store/core/extensions.dart';
+import 'package:clothing_store/features/cart/domain/usecases/add_cart_item.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/di.dart';
+import '../../../authentication/data/failure/failure.dart';
 import '../../../shop/domain/entities/product.dart';
 import '../../domain/entities/cart_item.dart';
 
@@ -19,7 +23,14 @@ class Cart extends ChangeNotifier {
   double get totalPrice => _totalPrice + _deliveryCharge - _discount;
   double get discount => _discount;
 
-  void addCartItem(Product product) {
+  //* setter
+  set subTotal(double value) {
+    _totalPrice = value;
+    notifyListeners();
+  }
+
+  Future<Either<Failure, void>> addCartItem(Product product, String size) {
+    final usecase = getIt<AddCartItemUseCase>();
     // check if the item is not in cart yet, add it
     if (_cartItems.indexWhere((element) => element.product.id == product.id) ==
         -1) {
@@ -28,9 +39,7 @@ class Cart extends ChangeNotifier {
         product: product,
         quantity: 1,
         totalPrice: product.price,
-        size: product.availableSizes,
-        color:
-            product.availableColors.map((color) => color.valueColor).toList(),
+        sizes: [size],
       );
       _cartItems.add(cartItem);
     } else {
@@ -43,6 +52,8 @@ class Cart extends ChangeNotifier {
     // also update the price and quantity of cart
     _totalPrice += product.price;
     _totalItems++;
+    return usecase(
+        cartItems.firstWhere((element) => element.product.id == product.id));
   }
 
   void removeCartItem(Product product) {

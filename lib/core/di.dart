@@ -2,6 +2,9 @@ import 'package:clothing_store/features/admin_panel/data/repositories_impl/produ
 import 'package:clothing_store/features/admin_panel/domain/domain.dart';
 import 'package:clothing_store/features/authentication/domain/usecases/forget_password_usecase.dart';
 import 'package:clothing_store/features/authentication/domain/usecases/logout_usecase.dart';
+import 'package:clothing_store/features/cart/domain/usecases/add_cart_item.dart';
+import 'package:clothing_store/features/cart/domain/usecases/delete_cart_item.dart';
+import 'package:clothing_store/features/cart/domain/usecases/get_cart_items.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -11,6 +14,8 @@ import '../features/authentication/data/data.dart';
 import '../features/authentication/data/network/network_info.dart';
 import '../features/authentication/domain/domain.dart';
 import '../features/authentication/domain/usecases/usecases.dart';
+import '../features/cart/data/repositories_impl/cart_repository_impl.dart';
+import '../features/cart/domain/repositories/cart_repository.dart';
 import '../features/shop/data/repositories_impl/product_repository_impl.dart'
     as shop;
 import '../features/shop/domain/repositories/product_repository.dart' as shop;
@@ -62,4 +67,18 @@ Future<void> setup() async {
   // get all products usecase
   getIt.registerLazySingleton<GetAllProductsUseCase>(
       () => GetAllProductsUseCase(repository: getIt()));
+
+  //* Cart
+  // cart repository
+  getIt.registerLazySingleton<CartRepository>(
+      () => CartRepositoryImpl(networkInfo: getIt(), firestore: getIt()));
+  // add cart item usecase
+  getIt.registerLazySingleton<AddCartItemUseCase>(
+      () => AddCartItemUseCase(getIt()));
+  // get cart items usecase
+  getIt.registerLazySingleton<GetCartItemsUseCase>(
+      () => GetCartItemsUseCase(getIt()));
+  // remove cart item usecase
+  getIt.registerLazySingleton<DeleteCartItemUseCase>(
+      () => DeleteCartItemUseCase(getIt()));
 }

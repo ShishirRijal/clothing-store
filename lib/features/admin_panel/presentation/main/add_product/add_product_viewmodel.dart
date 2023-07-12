@@ -16,23 +16,6 @@ class AddProductViewModel extends ChangeNotifier {
   final productQuantityController = TextEditingController();
   final productBrandController = TextEditingController();
 
-  final _colors = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.yellow,
-    Colors.purple,
-    Colors.orange,
-    Colors.pink,
-    Colors.brown,
-    Colors.grey,
-    Colors.black,
-    Colors.white,
-    Colors.cyan,
-    Colors.teal,
-    Colors.indigo,
-    Colors.lime,
-  ];
   final _sizes = ['S', 'M', 'L', 'XL', 'XXL'];
   final _categories = [
     'T-Shirt',
@@ -63,7 +46,6 @@ class AddProductViewModel extends ChangeNotifier {
   bool isLoading = false;
 
   // * methods
-  bool isSelectedColor(Color color) => selectedColors.contains(color);
   bool isSelectedSize(String size) => selectedSizes.contains(size);
   // toggle selected color
   void toggleSelectedColor(int colorValue) {
@@ -185,7 +167,6 @@ class AddProductViewModel extends ChangeNotifier {
   }
 
   // * Getters
-  List<Color> get colors => _colors;
   List<String> get sizes => _sizes;
   List<String> get categories => _categories;
 }

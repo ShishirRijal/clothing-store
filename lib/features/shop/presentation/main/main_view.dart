@@ -1,9 +1,13 @@
 import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
+import 'package:clothing_store/features/admin_panel/presentation/main/add_product/add_product_viewmodel.dart';
 import 'package:clothing_store/features/authentication/data/network/network_info.dart';
+import 'package:clothing_store/features/cart/presentation/cart/cart_viewmodel.dart';
+import 'package:clothing_store/features/cart/presentation/providers/cart.dart';
 import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
 import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
+import 'package:clothing_store/features/shop/shop.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +48,8 @@ class _MainViewState extends State<MainView> {
           providers: [
             ChangeNotifierProvider<HomeViewModel>(
                 create: (_) => HomeViewModel()),
+            ChangeNotifierProvider<CartViewModel>(
+                create: (_) => CartViewModel()),
           ],
           child: Padding(
             padding: const EdgeInsets.all(20),

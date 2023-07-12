@@ -122,31 +122,31 @@ class _AddProductViewState extends State<AddProductView> {
                 ),
                 const SizedBox(height: 20),
 
-                // * Select available product colors
-                Text(
-                  'Available colors',
-                  style: getSemiBoldTextStyle(),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                    height: 50,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: viewModel.colors.length,
-                        separatorBuilder: (context, index) => const SizedBox(
-                              width: 20,
-                            ),
-                        itemBuilder: (context, index) {
-                          return _ColorBox(
-                            viewModel.colors[index].value,
-                            isSelected: viewModel.selectedColors
-                                .contains(viewModel.colors[index].value),
-                            onPressed: () => viewModel.toggleSelectedColor(
-                                viewModel.colors[index].value),
-                          );
-                        })),
+                // // * Select available product colors
+                // Text(
+                //   'Available colors',
+                //   style: getSemiBoldTextStyle(),
+                // ),
+                // const SizedBox(height: 10),
+                // SizedBox(
+                //     height: 50,
+                //     child: ListView.separated(
+                //         scrollDirection: Axis.horizontal,
+                //         itemCount: viewModel.colors.length,
+                //         separatorBuilder: (context, index) => const SizedBox(
+                //               width: 20,
+                //             ),
+                //         itemBuilder: (context, index) {
+                //           return _ColorBox(
+                //             viewModel.colors[index].value,
+                //             isSelected: viewModel.selectedColors
+                //                 .contains(viewModel.colors[index].value),
+                //             onPressed: () => viewModel.toggleSelectedColor(
+                //                 viewModel.colors[index].value),
+                //           );
+                //         })),
 
-                const SizedBox(height: 20),
+                // const SizedBox(height: 20),
 
                 // * Select available sizes
                 Text(
@@ -284,48 +284,48 @@ class CategoryButton extends StatelessWidget {
   }
 }
 
-class _ColorBox extends StatelessWidget {
-  const _ColorBox(
-    this.colorValue, {
-    this.isSelected = false,
-    this.onPressed,
-  });
-  final int colorValue;
+// class _ColorBox extends StatelessWidget {
+//   const _ColorBox(
+//     this.colorValue, {
+//     this.isSelected = false,
+//     this.onPressed,
+//   });
+//   final int colorValue;
 
-  final bool isSelected;
-  final VoidCallback? onPressed;
+//   final bool isSelected;
+//   final VoidCallback? onPressed;
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        height: 50,
-        width: 50,
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: onPressed,
+//       child: Container(
+//         height: 50,
+//         width: 50,
 
-        decoration: BoxDecoration(
-          color: Color(colorValue),
-          borderRadius: BorderRadius.circular(100),
-          //shadow
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        // show tick sign if selected
-        child: isSelected
-            ? Icon(
-                Icons.check,
-                color: colorValue == Colors.white.value
-                    ? ColorManager.primary
-                    : ColorManager.white,
-              )
-            : const SizedBox.shrink(),
-      ),
-    );
-  }
-}
+//         decoration: BoxDecoration(
+//           color: Color(colorValue),
+//           borderRadius: BorderRadius.circular(100),
+//           //shadow
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.grey.withOpacity(0.2),
+//               spreadRadius: 2,
+//               blurRadius: 5,
+//               offset: const Offset(0, 2),
+//             ),
+//           ],
+//         ),
+//         // show tick sign if selected
+//         child: isSelected
+//             ? Icon(
+//                 Icons.check,
+//                 color: colorValue == Colors.white.value
+//                     ? ColorManager.primary
+//                     : ColorManager.white,
+//               )
+//             : const SizedBox.shrink(),
+//       ),
+//     );
+//   }
+// }
