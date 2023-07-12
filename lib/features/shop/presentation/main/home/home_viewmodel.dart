@@ -1,4 +1,3 @@
-import 'package:clothing_store/core/base_usecase.dart';
 import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/features/shop/domain/usecases/get_all_products.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +8,24 @@ class HomeViewModel extends ChangeNotifier {
     'All',
     'T-Shirt',
     'Shirt',
-    'Jeans',
+    'Pants',
     'Shoes',
-    'T-Shirt',
-    'Shirt',
-    'Jeans',
-    'Shoes',
+    'Socks',
+    'Jacket',
+    'Coat',
+    'Sweater',
+    'Hoodie',
+    'Hat',
+    'Men',
+    'Women',
+    'Kids',
+    'Accessories',
+    'Bags',
+    'Wallets',
+    'Watches',
+    'Jewelry',
+    'Sunglasses',
+    'Belts',
   ];
   final _images = [
     'https://centralmallonline.in/wp-content/uploads/2022/12/banner3-scaled.jpg',

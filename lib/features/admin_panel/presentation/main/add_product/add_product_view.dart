@@ -139,8 +139,8 @@ class _AddProductViewState extends State<AddProductView> {
                         itemBuilder: (context, index) {
                           return _ColorBox(
                             viewModel.colors[index].value,
-                            isSelected: viewModel
-                                .isSelectedColor(viewModel.colors[index]),
+                            isSelected: viewModel.selectedColors
+                                .contains(viewModel.colors[index].value),
                             onPressed: () => viewModel.toggleSelectedColor(
                                 viewModel.colors[index].value),
                           );

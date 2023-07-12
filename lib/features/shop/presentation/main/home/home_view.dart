@@ -331,38 +331,65 @@ class Products extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         final product = products[index];
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                // to to product detail screen
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProductDetailView(product)));
-                              },
-                              // child: SizedBox(height: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image.network(
-                                  product.image,
-                                  fit: BoxFit.cover,
+                        return Container(
+                          // shadow
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(
+                                    0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    // to to product detail screen
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductDetailView(product)));
+                                  },
+                                  // child: SizedBox(height: 10),
+                                  child: SizedBox(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(15),
+                                      child: Image.network(
+                                        product.image,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              product.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: getSemiBoldTextStyle(size: 18),
-                            ),
-                            PriceText(product.price,
-                                priceWithoutDiscount: product.price * 1.12)
-                          ],
+                              const SizedBox(height: 10),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  product.name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: getSemiBoldTextStyle(size: 18),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                child: PriceText(product.price,
+                                    priceWithoutDiscount: product.price * 1.12),
+                              )
+                            ],
+                          ),
                         );
                       },
                       itemCount: products.length,
