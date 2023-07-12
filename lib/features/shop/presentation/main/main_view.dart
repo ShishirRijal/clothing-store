@@ -1,18 +1,13 @@
 import 'package:clothing_store/core/di.dart';
 import 'package:clothing_store/core/resources/asset_manager.dart';
 import 'package:clothing_store/core/resources/resources.dart';
-import 'package:clothing_store/features/admin_panel/presentation/main/add_product/add_product_viewmodel.dart';
 import 'package:clothing_store/features/authentication/data/network/network_info.dart';
 import 'package:clothing_store/features/cart/presentation/cart/cart_viewmodel.dart';
-import 'package:clothing_store/features/cart/presentation/providers/cart.dart';
-import 'package:clothing_store/features/shop/presentation/main/favourites_view.dart';
-import 'package:clothing_store/features/shop/presentation/main/profile_view.dart';
 import 'package:clothing_store/features/shop/shop.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../../cart/cart.dart';
-import 'home/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'home/home_viewmodel.dart';
@@ -28,8 +23,8 @@ class _MainViewState extends State<MainView> {
   late int _selectedIndex;
   List<Widget> pages = const [
     HomeView(),
-    FavouritesView(),
     CartView(),
+    OrdersView(),
     ProfileView(),
   ];
   late Future<bool> isConnected;
@@ -85,9 +80,10 @@ class _MainViewState extends State<MainView> {
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border), label: "Favourite"),
-            BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_basket_outlined), label: "Cart"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_grocery_store_outlined),
+                label: "Orders"),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ]),
     );
